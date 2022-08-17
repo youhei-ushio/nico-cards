@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ccbd816a07b206f971042295b899d1ba",
+    "content-hash": "880e595528c0ee314e4cdf6dc2263438",
     "packages": [
         {
             "name": "brick/math",
@@ -2818,6 +2818,174 @@
                 }
             ],
             "time": "2022-08-05T17:58:37+00:00"
+        },
+        {
+            "name": "robinvdvleuten/ulid",
+            "version": "v5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/robinvdvleuten/php-ulid.git",
+                "reference": "5389c9a2ff020815cc1f2b840334fdcb84ae3f35"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/robinvdvleuten/php-ulid/zipball/5389c9a2ff020815cc1f2b840334fdcb84ae3f35",
+                "reference": "5389c9a2ff020815cc1f2b840334fdcb84ae3f35",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2|^8.0"
+            },
+            "require-dev": {
+                "phpbench/phpbench": "^1.0.0-alpha3",
+                "phpunit/phpunit": "^8.5",
+                "symfony/phpunit-bridge": "^5.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ulid\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Robin van der Vleuten",
+                    "email": "robin@webstronauts.co"
+                }
+            ],
+            "description": "Universally Unique Lexicographically Sortable Identifier (ULID) implementation for PHP.",
+            "homepage": "https://github.com/robinvdvleuten/php-ulid",
+            "support": {
+                "issues": "https://github.com/robinvdvleuten/php-ulid/issues",
+                "source": "https://github.com/robinvdvleuten/php-ulid/tree/v5.0.0"
+            },
+            "time": "2020-12-06T19:13:21+00:00"
+        },
+        {
+            "name": "seasalt/nicoca",
+            "version": "v2.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/trustbank-inc/nicoca.git",
+                "reference": "cef4d006118cd25195de31b521ec10b04d4cf3d0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/trustbank-inc/nicoca/zipball/cef4d006118cd25195de31b521ec10b04d4cf3d0",
+                "reference": "cef4d006118cd25195de31b521ec10b04d4cf3d0",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": ">=8.0",
+                "php": ">=8.0",
+                "robinvdvleuten/ulid": "^5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Seasalt\\Nicoca\\ComponentServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Tests\\": "tests",
+                    "Seasalt\\Nicoca\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "youhei-ushio"
+                }
+            ],
+            "description": "PHP Clean architecture components",
+            "support": {
+                "issues": "https://github.com/trustbank-inc/nicoca/issues",
+                "source": "https://github.com/trustbank-inc/nicoca/tree/v2.7.0"
+            },
+            "time": "2022-07-13T20:56:06+00:00"
+        },
+        {
+            "name": "spatie/laravel-route-attributes",
+            "version": "1.12.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-route-attributes.git",
+                "reference": "9f729547ec8f221091d8883a4d2b063f637e586b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-route-attributes/zipball/9f729547ec8f221091d8883a4d2b063f637e586b",
+                "reference": "9f729547ec8f221091d8883a4d2b063f637e586b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^8.67|^9.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0|^7.0",
+                "phpunit/phpunit": "^9.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\RouteAttributes\\RouteAttributesServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\RouteAttributes\\": "src",
+                    "Spatie\\RouteAttributes\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Auto register routes using PHP attributes",
+            "homepage": "https://github.com/spatie/laravel-route-attributes",
+            "keywords": [
+                "laravel-route-attributes",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-route-attributes/issues",
+                "source": "https://github.com/spatie/laravel-route-attributes/tree/1.12.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/spatie",
+                    "type": "github"
+                },
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "other"
+                }
+            ],
+            "time": "2022-08-09T16:09:11+00:00"
         },
         {
             "name": "symfony/console",
@@ -6603,6 +6771,53 @@
             "time": "2022-06-19T12:14:25+00:00"
         },
         {
+            "name": "seasalt/nico-scaffold",
+            "version": "v1.11.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/trustbank-inc/nico-scaffold.git",
+                "reference": "f7ecd7b5f82eb7410809d379189b9059e778ca46"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/trustbank-inc/nico-scaffold/zipball/f7ecd7b5f82eb7410809d379189b9059e778ca46",
+                "reference": "f7ecd7b5f82eb7410809d379189b9059e778ca46",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": ">=8.0",
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Seasalt\\NicoScaffold\\ContextServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Seasalt\\NicoScaffold\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "youhei-ushio"
+                }
+            ],
+            "description": "Create a clean architecture scaffold",
+            "support": {
+                "issues": "https://github.com/trustbank-inc/nico-scaffold/issues",
+                "source": "https://github.com/trustbank-inc/nico-scaffold/tree/v1.11.6"
+            },
+            "time": "2022-06-25T15:46:49+00:00"
+        },
+        {
             "name": "sebastian/cli-parser",
             "version": "1.0.1",
             "source": {
@@ -7922,5 +8137,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }

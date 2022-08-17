@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "seasalt/nico-cards",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Playing cards.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
@@ -9,10 +9,14 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
-        "laravel/tinker": "^2.7"
+        "laravel/tinker": "^2.7",
+        "seasalt/nicoca": "~2.0",
+        "seasalt/nico-scaffold": "~1.0",
+        "spatie/laravel-route-attributes": "^1.12"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
+        "laravel/breeze": "^1.12",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
