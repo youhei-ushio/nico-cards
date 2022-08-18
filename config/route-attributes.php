@@ -14,12 +14,14 @@ return [
      */
     'directories' => [
         app_path('Http/Controllers'),
-        /*
-        app_path('Http/Controllers/Api') => [
-           'prefix' => 'api',
-           'middleware' => 'api',
+        app_path('Contexts/Robby/Infrastructure/Http/Controller') => [
+            'prefix' => '',
+            'middleware' => ['web', 'auth'],
         ],
-        */
+        app_path('Contexts/MyPage/Infrastructure/Http/Controller') => [
+            'prefix' => '',
+            'middleware' => ['web', 'auth'],
+        ],
     ],
 
     /**

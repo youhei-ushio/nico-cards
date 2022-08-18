@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e0bdcf92f56a0961f9c0cfaeac4fded",
+    "content-hash": "0d8905a377a8f41a9e0928f7cc5453f8",
     "packages": [
         {
             "name": "brick/math",
@@ -2864,6 +2864,53 @@
                 "source": "https://github.com/robinvdvleuten/php-ulid/tree/v5.0.0"
             },
             "time": "2020-12-06T19:13:21+00:00"
+        },
+        {
+            "name": "seasalt/nico-scaffold",
+            "version": "v1.12.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/trustbank-inc/nico-scaffold.git",
+                "reference": "1463b54a8beeaa8b59e4a6c11e399c7afa5f7767"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/trustbank-inc/nico-scaffold/zipball/1463b54a8beeaa8b59e4a6c11e399c7afa5f7767",
+                "reference": "1463b54a8beeaa8b59e4a6c11e399c7afa5f7767",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": ">=8.0",
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Seasalt\\NicoScaffold\\ContextServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Seasalt\\NicoScaffold\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "youhei-ushio"
+                }
+            ],
+            "description": "Create a clean architecture scaffold",
+            "support": {
+                "issues": "https://github.com/trustbank-inc/nico-scaffold/issues",
+                "source": "https://github.com/trustbank-inc/nico-scaffold/tree/v1.12.2"
+            },
+            "time": "2022-08-17T22:51:44+00:00"
         },
         {
             "name": "seasalt/nicoca",
@@ -5796,16 +5843,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.15.3",
+            "version": "v1.15.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "7e7222ef0b0d7f0a0b9635543c0d7d09ef720cf1"
+                "reference": "853dea1fa866a52a93beccc4e5affdc49b98e7d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/7e7222ef0b0d7f0a0b9635543c0d7d09ef720cf1",
-                "reference": "7e7222ef0b0d7f0a0b9635543c0d7d09ef720cf1",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/853dea1fa866a52a93beccc4e5affdc49b98e7d5",
+                "reference": "853dea1fa866a52a93beccc4e5affdc49b98e7d5",
                 "shasum": ""
             },
             "require": {
@@ -5852,7 +5899,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2022-08-16T14:53:54+00:00"
+            "time": "2022-08-17T13:17:15+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -6830,53 +6877,6 @@
                 }
             ],
             "time": "2022-06-19T12:14:25+00:00"
-        },
-        {
-            "name": "seasalt/nico-scaffold",
-            "version": "v1.11.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/trustbank-inc/nico-scaffold.git",
-                "reference": "f7ecd7b5f82eb7410809d379189b9059e778ca46"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/trustbank-inc/nico-scaffold/zipball/f7ecd7b5f82eb7410809d379189b9059e778ca46",
-                "reference": "f7ecd7b5f82eb7410809d379189b9059e778ca46",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/framework": ">=8.0",
-                "php": ">=8.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Seasalt\\NicoScaffold\\ContextServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Seasalt\\NicoScaffold\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "youhei-ushio"
-                }
-            ],
-            "description": "Create a clean architecture scaffold",
-            "support": {
-                "issues": "https://github.com/trustbank-inc/nico-scaffold/issues",
-                "source": "https://github.com/trustbank-inc/nico-scaffold/tree/v1.11.6"
-            },
-            "time": "2022-06-25T15:46:49+00:00"
         },
         {
             "name": "sebastian/cli-parser",
