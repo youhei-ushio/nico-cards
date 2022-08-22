@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contexts\MyPage\Domain\Persistence;
 
-use App\Core\Domain\Value;
+use App\Contexts\Core\Domain\Value;
 
 /**
  * リポジトリで利用するDTO

@@ -13,7 +13,7 @@ final class PlayerRepositoryServiceProvider extends ServiceProvider
     /**
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->bind(PlayerRepository::class, PlayerRepositoryImpl::class);
     }

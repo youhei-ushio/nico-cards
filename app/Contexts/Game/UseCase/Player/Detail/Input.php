@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contexts\Game\UseCase\Player\Detail;
 
-use App\Core\Domain\Value;
+use App\Contexts\Core\Domain\Value;
 use Seasalt\Nicoca\Components\UseCase\InputValidator;
 
 final class Input

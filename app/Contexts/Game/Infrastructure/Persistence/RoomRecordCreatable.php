@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Contexts\Game\Infrastructure\Persistence;
 
-use App\Core\Domain\Persistence\RoomRestoreRecord;
-use App\Core\Domain\Value;
+use App\Contexts\Core\Domain\Persistence\RoomRestoreRecord;
+use App\Contexts\Core\Domain\Value;
 
 trait RoomRecordCreatable
 {

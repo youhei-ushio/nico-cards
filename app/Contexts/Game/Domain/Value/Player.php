@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Contexts\Game\Domain\Value;
 
 use App\Contexts\Game\Domain\Persistence\PlayerRestoreRecord;
-use App\Core\Domain\Value;
+use App\Contexts\Core\Domain\Value;
 
 /**
- * プレイヤー
+ * プレイヤー（自分）
  */
 final class Player
 {
@@ -16,12 +16,12 @@ final class Player
      * newによるインスタンス化はさせない
      *
      * @param Value\Member\Name $name
-     * @param Value\Room $room
+     * @param Value\Member[] $opponents
      * @see restore()
      */
     private function __construct(
         public readonly Value\Member\Name $name,
-        public readonly Value\Room $room,
+        public readonly array $opponents,
     )
     {
 
@@ -35,9 +35,17 @@ final class Player
      */
     public static function restore(PlayerRestoreRecord $record): self
     {
+        $opponents = [];
+        foreach ($record->roomRecord->members as $member) {
+            if ($member->id->equals($record->id)) {
+                continue;
+            }
+            $opponents[] = $member;
+        }
+
         return new self(
             name: $record->name,
-            room: Value\Room::restore($record->roomRecord),
+            opponents: $opponents,
         );
     }
 }

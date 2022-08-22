@@ -6,8 +6,8 @@ namespace App\Contexts\MyPage\Domain\Entity;
 
 use App\Contexts\MyPage\Domain\Persistence\MemberRepository;
 use App\Contexts\MyPage\Domain\Persistence\MemberSaveRecord;
-use App\Core\Domain\Persistence\MemberRestoreRecord;
-use App\Core\Domain\Value;
+use App\Contexts\Core\Domain\Persistence\MemberRestoreRecord;
+use App\Contexts\Core\Domain\Value;
 
 /**
  * メンバー

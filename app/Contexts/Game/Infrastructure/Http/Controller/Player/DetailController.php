@@ -41,6 +41,7 @@ final class DetailController extends Controller
         }
         $view = new PlayerDetailView(
             $output->self,
+            $output->room,
         );
         return $view->render();
     }

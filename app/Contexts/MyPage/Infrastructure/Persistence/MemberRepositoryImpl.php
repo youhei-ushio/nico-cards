@@ -6,9 +6,9 @@ namespace App\Contexts\MyPage\Infrastructure\Persistence;
 
 use App\Contexts\MyPage\Domain\Exception\MemberNotFoundException;
 use App\Contexts\MyPage\Domain\Persistence\MemberRepository;
-use App\Core\Domain\Persistence\MemberRestoreRecord;
+use App\Contexts\Core\Domain\Persistence\MemberRestoreRecord;
 use App\Contexts\MyPage\Domain\Persistence\MemberSaveRecord;
-use App\Core\Domain\Value;
+use App\Contexts\Core\Domain\Value;
 use App\Models;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contexts\MyPage\Infrastructure\Presenter;
 
-use App\Core\Domain\Value\Member;
+use App\Contexts\Core\Domain\Value\Member;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;

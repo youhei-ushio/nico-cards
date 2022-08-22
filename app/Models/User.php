@@ -55,6 +55,7 @@ class User extends Authenticatable
             related: Room::class,
             table: 'room_users',
             foreignPivotKey: 'user_id',
-            relatedPivotKey: 'room_id');
+            relatedPivotKey: 'room_id')
+            ->withPivot('entered');
     }
 }

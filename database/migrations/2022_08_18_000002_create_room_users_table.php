@@ -14,6 +14,7 @@ return new class() extends Migration
             $table->id();
             $table->unsignedBigInteger('room_id')->comment('部屋ID');
             $table->unsignedBigInteger('user_id')->comment('メンバーID');
+            $table->boolean('entered')->default(true)->comment('入室済みか');
             $table->unique([
                 'room_id',
                 'user_id',

@@ -7,7 +7,7 @@ namespace App\Contexts\Game\Infrastructure\Persistence;
 use App\Contexts\Game\Domain\Persistence\PlayerRepository;
 use App\Contexts\Game\Domain\Persistence\PlayerRestoreRecord;
 use App\Contexts\Game\Domain\Exception\PlayerNotFoundException;
-use App\Core\Domain\Value;
+use App\Contexts\Core\Domain\Value;
 use App\Models;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

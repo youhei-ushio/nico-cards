@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Contexts\MyPage\Infrastructure\Persistence;
 
-use App\Core\Domain\Persistence\MemberRestoreRecord;
-use App\Core\Domain\Value;
+use App\Contexts\Core\Domain\Persistence\MemberRestoreRecord;
+use App\Contexts\Core\Domain\Value;
 
 trait MemberRecordCreatable
 {

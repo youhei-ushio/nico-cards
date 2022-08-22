@@ -14,11 +14,15 @@ return [
      */
     'directories' => [
         app_path('Http/Controllers'),
-        app_path('Contexts/Robby/Infrastructure/Http/Controller') => [
+        app_path('Contexts/Lobby/Infrastructure/Http/Controller') => [
             'prefix' => '',
             'middleware' => ['web', 'auth'],
         ],
         app_path('Contexts/MyPage/Infrastructure/Http/Controller') => [
+            'prefix' => '',
+            'middleware' => ['web', 'auth'],
+        ],
+        app_path('Contexts/Game/Infrastructure/Http/Controller') => [
             'prefix' => '',
             'middleware' => ['web', 'auth'],
         ],

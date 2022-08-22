@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contexts\MyPage\Domain\Persistence;
 
-use App\Core\Domain\Persistence\MemberRepository as MemberValueRepository;
+use App\Contexts\Core\Domain\Persistence\MemberRepository as MemberValueRepository;
 
 /**
  * メンバーリポジトリ
