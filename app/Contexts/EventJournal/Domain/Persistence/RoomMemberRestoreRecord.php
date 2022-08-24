@@ -15,7 +15,7 @@ use App\Contexts\Core\Domain\Value;
 final class RoomMemberRestoreRecord
 {
     public function __construct(
-        public readonly Value\Member\Id $id,
+        public readonly int $id,
         public readonly RoomRestoreRecord|null $roomRecord,
     )
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contexts\Core\Domain\Value;
 
+use App\Contexts\Core\Domain\Value;
 use App\Contexts\Core\Domain\Persistence\MemberRestoreRecord;
 
 /**
@@ -37,9 +38,9 @@ final class Member
     public static function restore(MemberRestoreRecord $record): self
     {
         return new self(
-            id: $record->id,
-            name: $record->name,
-            email: $record->email,
+            id: Value\Member\Id::fromNumber($record->id),
+            name: Value\Member\Name::fromString($record->name),
+            email: Value\Member\Email::fromString($record->email),
         );
     }
 }

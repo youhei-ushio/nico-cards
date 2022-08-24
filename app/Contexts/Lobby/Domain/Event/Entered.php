@@ -27,7 +27,7 @@ final class Entered implements Value\Event
             type: Value\Event\Type::fromString('enter'),
             memberId: $this->memberId,
             roomId: $this->roomId,
-            card: null,
+            payload: null,
         ));
     }
 }

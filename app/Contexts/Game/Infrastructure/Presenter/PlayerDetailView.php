@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace App\Contexts\Game\Infrastructure\Presenter;
 
-use App\Contexts\Core\Domain\Value\Room;
-use App\Contexts\Game\Domain\Value\Player;
+use App\Contexts\Core\Domain\Value;
+use App\Contexts\Game\Domain\Value\Round;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Str;
 
 final class PlayerDetailView
 {
     public function __construct(
-        public readonly Player $self,
-        public readonly Room $room,
+        public readonly Value\Member $member,
+        public readonly Value\Room $room,
+        public readonly Round|null $round,
     )
     {
 
@@ -31,17 +33,31 @@ final class PlayerDetailView
         return view('Game::player/detail')->with('view', $this);
     }
 
-    public function getPlayerImagePath(int $index): string
+    /**
+     * @param int $index
+     * @return string
+     */
+    public function getPlayerImagePath(Value\Member\Id $memberId): string
     {
-        switch ($index) {
-            case 1:
-                return asset('/images/youngwoman_45.png');
-            case 2:
-                return asset('/images/youngman_33.png');
-            case 3:
-                return asset('/images/youngwoman_38.png');
-            default:
-                return asset('/images/youngman_29.png');
+        $index = $memberId->getValue() % 4;
+        return match ($index) {
+            1 => asset('/images/youngwoman_45.png'),
+            2 => asset('/images/youngman_33.png'),
+            3 => asset('/images/youngwoman_38.png'),
+            default => asset('/images/youngman_29.png'),
+        };
+    }
+
+    /**
+     * @param Value\Game\Card $card
+     * @return string
+     */
+    public function getCardImagePath(Value\Game\Card $card): string
+    {
+        if ($card->isJoker()) {
+            return asset('/images/card_joker.png');
         }
+        $suit = strtolower(Str::singular($card->suit));
+        return asset(sprintf('/images/card_%s_%02d.png', $suit, $card->number));
     }
 }

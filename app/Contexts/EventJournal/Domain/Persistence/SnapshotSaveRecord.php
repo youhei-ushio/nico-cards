@@ -9,8 +9,8 @@ use App\Contexts\Core\Domain\Value;
 final class SnapshotSaveRecord
 {
     public function __construct(
-        public readonly Value\Event\Id $id,
-        public readonly Value\Room\Id $roomId,
+        public readonly int $id,
+        public readonly int $roomId,
     )
     {
 

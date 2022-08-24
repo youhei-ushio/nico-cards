@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Contexts\Core\Domain\Persistence;
 
-use App\Contexts\Core\Domain\Value;
-
 /**
  * リポジトリで利用するDTO
  *
@@ -14,9 +12,9 @@ use App\Contexts\Core\Domain\Value;
 final class MemberRestoreRecord
 {
     public function __construct(
-        public readonly Value\Member\Id $id,
-        public readonly Value\Member\Name $name,
-        public readonly Value\Member\Email $email,
+        public readonly int $id,
+        public readonly string $name,
+        public readonly string $email,
     )
     {
 

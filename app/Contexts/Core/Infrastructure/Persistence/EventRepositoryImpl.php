@@ -22,8 +22,7 @@ final class EventRepositoryImpl implements EventRepository
                 'type' => $record->type,
                 'user_id' => $record->memberId?->getValue(),
                 'room_id' => $record->roomId?->getValue(),
-                'suit' => $record->card?->suit,
-                'number' => $record->card?->number,
+                'payload' => $record->payload !== null ? json_encode($record->payload) : null,
             ])
             ->saveOrFail();
     }

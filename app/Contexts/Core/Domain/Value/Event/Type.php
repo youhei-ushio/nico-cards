@@ -16,8 +16,9 @@ final class Type
     private const VALUES = [
         'enter',
         'leave',
-        'start',
+        'round',
         'deal',
+        'start',
         'play',
         'pass',
         'end',

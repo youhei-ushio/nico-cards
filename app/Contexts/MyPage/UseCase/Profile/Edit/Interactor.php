@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Contexts\MyPage\UseCase\Profile\Edit;
 
 use App\Contexts\Core\Domain\Value\Member;
-use App\Contexts\Core\Domain\Persistence\MemberRepository;
+use App\Contexts\MyPage\Domain\Persistence\MemberRepository;
 
 final class Interactor
 {

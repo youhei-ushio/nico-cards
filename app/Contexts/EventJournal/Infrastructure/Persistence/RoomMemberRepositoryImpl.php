@@ -8,7 +8,7 @@ use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\Domain\Persistence\RoomMemberRepository;
 use App\Contexts\EventJournal\Domain\Persistence\RoomMemberRestoreRecord;
 use App\Contexts\EventJournal\Domain\Persistence\RoomMemberSaveRecord;
-use App\Contexts\Lobby\Domain\Exception\MemberNotFoundException;
+use App\Contexts\EventJournal\Domain\Exception\MemberNotFoundException;
 use App\Models;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;

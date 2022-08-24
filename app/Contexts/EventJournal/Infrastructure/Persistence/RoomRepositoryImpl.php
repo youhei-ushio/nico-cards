@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Contexts\EventJournal\Infrastructure\Persistence;
 
-use App\Contexts\Lobby\Domain\Exception\MemberNotFoundException;
-use App\Contexts\Core\Domain\Persistence\RoomRepository;
 use App\Contexts\Core\Domain\Persistence\RoomRestoreRecord;
 use App\Contexts\Core\Domain\Value;
+use App\Contexts\Core\Infrastructure\Persistence\RoomRecordCreatable;
+use App\Contexts\EventJournal\Domain\Exception\MemberNotFoundException;
+use App\Contexts\EventJournal\Domain\Persistence\RoomRepository;
 use App\Models;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

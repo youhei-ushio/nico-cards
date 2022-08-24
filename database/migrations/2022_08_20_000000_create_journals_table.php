@@ -15,8 +15,7 @@ return new class() extends Migration
             $table->string('type', 10)->comment('イベント種別(enter,leave,start,deal,play,pass,end)');
             $table->unsignedBigInteger('room_id')->comment('部屋ID');
             $table->unsignedBigInteger('user_id')->nullable()->comment('メンバーID');
-            $table->string('suit', 10)->nullable()->comment('カードのシンボル');
-            $table->unsignedTinyInteger('number')->nullable()->comment('カードの数字');
+            $table->json('payload')->nullable()->comment('イベント毎のデータ');
             $table->timestamps();
             $table->index('room_id');
             $table->comment('イベントジャーナル');

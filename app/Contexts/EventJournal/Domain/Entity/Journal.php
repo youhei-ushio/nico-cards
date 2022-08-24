@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contexts\EventJournal\Domain\Entity;
 
+use App\Contexts\Core\Domain\Persistence\CardRestoreRecord;
 use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\Domain\Persistence\JournalListRepository;
 use App\Contexts\EventJournal\Domain\Persistence\JournalRestoreRecord;
@@ -13,12 +14,19 @@ use Traversable;
 
 final class Journal
 {
+    /**
+     * @param Value\Event\Id $id
+     * @param Value\Event\Type $type
+     * @param Value\Room\Id|null $roomId
+     * @param Value\Member\Id|null $memberId
+     * @param Value\Game\Card[] $cards
+     */
     public function __construct(
         public readonly Value\Event\Id $id,
         public readonly Value\Event\Type $type,
         public readonly Value\Room\Id|null $roomId,
         public readonly Value\Member\Id|null $memberId,
-        public readonly Value\Game\Card|null $card,
+        public readonly array $cards,
     )
     {
 
@@ -64,16 +72,19 @@ final class Journal
 
     /**
      * @param JournalRestoreRecord $record
-     * @return static
+     * @return self
      */
     private static function restoreFromRecord(JournalRestoreRecord $record): self
     {
         return new self(
-            id: $record->id,
-            type: $record->type,
-            roomId: $record->roomId,
-            memberId: $record->memberId,
-            card: $record->card,
+            id: Value\Event\Id::fromNumber($record->id),
+            type: Value\Event\Type::fromString($record->type),
+            roomId: Value\Room\Id::fromNumber($record->roomId),
+            memberId: Value\Member\Id::fromNumber($record->memberId),
+            cards: array_map(
+                function (CardRestoreRecord $cardRecord) {
+                    return Value\Game\Card::restore($cardRecord);
+                }, $record->cards),
         );
     }
 }

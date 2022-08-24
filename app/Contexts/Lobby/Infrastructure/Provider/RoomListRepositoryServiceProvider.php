@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Contexts\Lobby\Infrastructure\Provider;
 
+use App\Contexts\Lobby\Domain\Persistence\RoomListRepository;
 use App\Contexts\Lobby\Infrastructure\Persistence\RoomListRepositoryImpl;
-use App\Contexts\Core\Domain\Persistence\RoomListRepository;
 use Illuminate\Support\ServiceProvider;
 
 final class RoomListRepositoryServiceProvider extends ServiceProvider

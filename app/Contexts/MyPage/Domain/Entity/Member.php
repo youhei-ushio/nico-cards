@@ -46,8 +46,8 @@ final class Member
     public static function restore(MemberRestoreRecord $record): self
     {
         return new self(
-            id: $record->id,
-            name: $record->name,
+            id: Value\Member\Id::fromNumber($record->id),
+            name: Value\Member\Name::fromString($record->name),
         );
     }
 

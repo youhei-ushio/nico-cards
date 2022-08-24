@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contexts\MyPage\Infrastructure\Persistence;
 
+use App\Contexts\Core\Infrastructure\Persistence\MemberRecordCreatable;
 use App\Contexts\MyPage\Domain\Exception\MemberNotFoundException;
 use App\Contexts\MyPage\Domain\Persistence\MemberRepository;
 use App\Contexts\Core\Domain\Persistence\MemberRestoreRecord;

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Contexts\Lobby\UseCase\Room\Index;
 
 use App\Contexts\Core\Domain\Persistence\EventMessageListRepository;
-use App\Contexts\Core\Domain\Persistence\MemberRepository;
-use App\Contexts\Core\Domain\Persistence\RoomListRepository;
 use App\Contexts\Core\Domain\Value;
+use App\Contexts\Lobby\Domain\Persistence\MemberRepository;
+use App\Contexts\Lobby\Domain\Persistence\RoomListRepository;
 
 final class Interactor
 {

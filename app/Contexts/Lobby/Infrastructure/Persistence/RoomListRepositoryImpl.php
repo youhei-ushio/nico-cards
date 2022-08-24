@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Contexts\Lobby\Infrastructure\Persistence;
 
-use App\Contexts\Core\Domain\Persistence\RoomListRepository;
 use App\Contexts\Core\Domain\Persistence\RoomRestoreRecord;
+use App\Contexts\Core\Infrastructure\Persistence\RoomRecordCreatable;
+use App\Contexts\Lobby\Domain\Persistence\RoomListRepository;
 use App\Models;
 
 final class RoomListRepositoryImpl implements RoomListRepository

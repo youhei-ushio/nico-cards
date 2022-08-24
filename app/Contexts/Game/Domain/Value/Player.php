@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Contexts\Game\Domain\Value;
 
-use App\Contexts\Game\Domain\Persistence\PlayerRestoreRecord;
+use App\Contexts\Core\Domain\Persistence\CardRestoreRecord;
+use App\Contexts\Core\Domain\Persistence\PlayerRestoreRecord;
 use App\Contexts\Core\Domain\Value;
 
 /**
@@ -13,39 +14,34 @@ use App\Contexts\Core\Domain\Value;
 final class Player
 {
     /**
-     * newによるインスタンス化はさせない
-     *
-     * @param Value\Member\Name $name
-     * @param Value\Member[] $opponents
-     * @see restore()
+     * @param Value\Member\Id $id メンバーID
+     * @param Value\Member\Name $name メンバー名
+     * @param bool $onTurn ターン中かどうか
+     * @param Value\Game\Card[] $hand 手札
      */
     private function __construct(
+        public readonly Value\Member\Id $id,
         public readonly Value\Member\Name $name,
-        public readonly array $opponents,
+        public readonly bool $onTurn,
+        public readonly array $hand,
     )
     {
 
     }
 
     /**
-     * 永続化されたエンティティを復元する
-     *
      * @param PlayerRestoreRecord $record
      * @return self
      */
     public static function restore(PlayerRestoreRecord $record): self
     {
-        $opponents = [];
-        foreach ($record->roomRecord->members as $member) {
-            if ($member->id->equals($record->id)) {
-                continue;
-            }
-            $opponents[] = $member;
-        }
-
         return new self(
-            name: $record->name,
-            opponents: $opponents,
+            id: Value\Member\Id::fromNumber($record->id),
+            name: Value\Member\Name::fromString($record->name),
+            onTurn: $record->onTurn,
+            hand: array_map(function (CardRestoreRecord $record) {
+                return Value\Game\Card::restore($record);
+            }, $record->hand),
         );
     }
 }

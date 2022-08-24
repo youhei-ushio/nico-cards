@@ -27,7 +27,7 @@ final class Left implements Value\Event
             type: Value\Event\Type::fromString('leave'),
             memberId: $this->memberId,
             roomId: $this->roomId,
-            card: null,
+            payload: null,
         ));
     }
 }

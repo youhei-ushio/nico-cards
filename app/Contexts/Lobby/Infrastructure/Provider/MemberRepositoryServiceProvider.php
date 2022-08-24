@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Contexts\Lobby\Infrastructure\Provider;
 
+use App\Contexts\Lobby\Domain\Persistence\MemberRepository;
 use App\Contexts\Lobby\Infrastructure\Persistence\MemberRepositoryImpl;
-use App\Contexts\Core\Domain\Persistence\MemberRepository;
 use Illuminate\Support\ServiceProvider;
 
 final class MemberRepositoryServiceProvider extends ServiceProvider

@@ -19,8 +19,8 @@ final class SnapshotRepositoryImpl implements SnapshotRepository
     {
         (new Models\Snapshot)
             ->fill([
-                'journal_id' => $record->id->getValue(),
-                'room_id' => $record->roomId->getValue(),
+                'journal_id' => $record->id,
+                'room_id' => $record->roomId,
             ])
             ->saveOrFail();
     }

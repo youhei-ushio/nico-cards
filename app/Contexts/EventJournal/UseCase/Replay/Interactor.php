@@ -5,11 +5,16 @@ declare(strict_types=1);
 namespace App\Contexts\EventJournal\UseCase\Replay;
 
 use App\Contexts\EventJournal\Domain\Entity\Journal;
+use App\Contexts\EventJournal\Domain\Exception\UnknownEventException;
 use App\Contexts\EventJournal\Domain\Persistence\JournalListRepository;
 use App\Contexts\EventJournal\Domain\Persistence\SnapshotRepository;
 use App\Contexts\EventJournal\Domain\Persistence\SnapshotSaveRecord;
 use App\Contexts\EventJournal\UseCase\Room\Enter\Interactor as RoomEnterInteractor;
 use App\Contexts\EventJournal\UseCase\Room\Leave\Interactor as RoomLeaveInteractor;
+use App\Contexts\EventJournal\UseCase\Round\Create\Interactor as RoundCreateInteractor;
+use App\Contexts\EventJournal\UseCase\Round\Deal\Interactor as RoundDealInteractor;
+use App\Contexts\EventJournal\UseCase\Round\Start\Interactor as RoundStartInteractor;
+use App\Contexts\EventJournal\UseCase\Round\Play\Interactor as RoundPlayInteractor;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -20,6 +25,10 @@ final class Interactor
         private readonly SnapshotRepository $snapshotRepository,
         private readonly RoomEnterInteractor $roomEnter,
         private readonly RoomLeaveInteractor $roomLeave,
+        private readonly RoundCreateInteractor $roundCreate,
+        private readonly RoundDealInteractor $roundDeal,
+        private readonly RoundStartInteractor $roundStart,
+        private readonly RoundPlayInteractor $roundPlay,
     )
     {
 
@@ -47,6 +56,16 @@ final class Interactor
                         $this->roomEnter->execute($journal);
                     } elseif ($journal->type->equals('leave')) {
                         $this->roomLeave->execute($journal);
+                    } elseif ($journal->type->equals('round')) {
+                        $this->roundCreate->execute($journal);
+                    } elseif ($journal->type->equals('deal')) {
+                        $this->roundDeal->execute($journal);
+                    } elseif ($journal->type->equals('start')) {
+                        $this->roundStart->execute($journal);
+                    } elseif ($journal->type->equals('play')) {
+                        $this->roundPlay->execute($journal);
+                    } else {
+                        throw new UnknownEventException();
                     }
                 } catch (Throwable $exception) {
                     Log::error($exception->getMessage(), ['file' => "{$exception->getFile()}:{$exception->getLine()}", 'journal_id' => $journal->id->getValue()]);
@@ -56,8 +75,8 @@ final class Interactor
 
             $this->snapshotRepository->save(
                 new SnapshotSaveRecord(
-                    $lastId,
-                    $input->roomId,
+                    $lastId->getValue(),
+                    $input->roomId->getValue(),
                 )
             );
         }

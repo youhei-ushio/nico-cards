@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Contexts\Core\Domain\Value;
 
 use App\Contexts\Core\Domain\Persistence\MemberRestoreRecord;
-use App\Contexts\Core\Domain\Persistence\RoomListRepository;
 use App\Contexts\Core\Domain\Persistence\RoomRestoreRecord;
+use App\Contexts\Core\Domain\Value;
+use App\Contexts\Lobby\Domain\Persistence\RoomListRepository;
 use Generator;
 use IteratorIterator;
 use Traversable;
@@ -16,6 +17,9 @@ use Traversable;
  */
 final class Room
 {
+    /** @var int */
+    private const USER_LIMIT = 4;
+
     /**
      * newによるインスタンス化はさせない
      *
@@ -109,13 +113,11 @@ final class Room
             return Member::restore($memberRecord);
         }, $record->members);
 
-        $limit = 4;
-
         return new self(
-            id: $record->id,
-            name: $record->name,
+            id: Value\Room\Id::fromNumber($record->id),
+            name: Value\Room\Name::fromString($record->name),
             members: $members,
-            isFull: count($members) >= $limit,
+            isFull: count($members) >= self::USER_LIMIT,
         );
     }
 }

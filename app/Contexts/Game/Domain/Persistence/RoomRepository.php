@@ -7,7 +7,14 @@ namespace App\Contexts\Game\Domain\Persistence;
 use App\Contexts\Core\Domain\Persistence\RoomRestoreRecord;
 use App\Contexts\Core\Domain\Value;
 
+/**
+ * 部屋のリポジトリ
+ */
 interface RoomRepository
 {
-    public function restore(Value\Member\Id $memberId): RoomRestoreRecord;
+    /**
+     * @param Value\Member\Id $id
+     * @return RoomRestoreRecord
+     */
+    public function restore(Value\Member\Id $id): RoomRestoreRecord;
 }

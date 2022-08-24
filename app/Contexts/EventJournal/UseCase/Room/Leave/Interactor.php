@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Contexts\EventJournal\UseCase\Room\Leave;
 
-use App\Contexts\Core\Domain\Persistence\RoomRepository;
 use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\Domain\Entity\Journal;
 use App\Contexts\EventJournal\Domain\Entity\RoomMember;
 use App\Contexts\EventJournal\Domain\Persistence\EventMessageRepository;
 use App\Contexts\EventJournal\Domain\Persistence\EventMessageSaveRecord;
 use App\Contexts\EventJournal\Domain\Persistence\RoomMemberRepository;
+use App\Contexts\EventJournal\Domain\Persistence\RoomRepository;
 
 final class Interactor
 {

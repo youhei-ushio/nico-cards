@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contexts\Core\Domain\Persistence;
 
-use App\Contexts\Core\Domain\Value;
+use App\Contexts\Lobby\Domain\Persistence\RoomListRepository;
 
 /**
  * リポジトリで利用するDTO
@@ -14,13 +14,13 @@ use App\Contexts\Core\Domain\Value;
 final class RoomRestoreRecord
 {
     /**
-     * @param Value\Room\Id $id
-     * @param Value\Room\Name $name
+     * @param int $id
+     * @param string $name
      * @param MemberRestoreRecord[] $members
      */
     public function __construct(
-        public readonly Value\Room\Id $id,
-        public readonly Value\Room\Name $name,
+        public readonly int $id,
+        public readonly string $name,
         public readonly array $members,
     )
     {

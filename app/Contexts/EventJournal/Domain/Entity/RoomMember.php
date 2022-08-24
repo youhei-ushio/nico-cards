@@ -87,7 +87,7 @@ final class RoomMember
             $room = Value\Room::restore($record->roomRecord);
         }
         return new self(
-            id: $record->id,
+            id: Value\Member\Id::fromNumber($record->id),
             room: $room,
         );
     }
