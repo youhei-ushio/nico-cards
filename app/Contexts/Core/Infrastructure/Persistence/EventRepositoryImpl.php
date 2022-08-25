@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contexts\Core\Infrastructure\Persistence;
 
+use App\Contexts\Core\Domain\Value;
 use App\Contexts\Core\Domain\Persistence\EventRepository;
 use App\Contexts\Core\Domain\Persistence\EventSaveRecord;
 use App\Models;
@@ -48,5 +49,31 @@ final class EventRepositoryImpl implements EventRepository
             }
             sleep(1);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function lastEventId(): Value\Event\Id|null
+    {
+        $row = Models\Snapshot::query()
+            ->max('journal_id');
+        if ($row === null) {
+            return null;
+        }
+        return Value\Event\Id::fromNumber($row);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function proceeded(Value\Event\Id|null $eventId): bool
+    {
+        if ($eventId === null) {
+            return false;
+        }
+        return Models\Snapshot::query()
+            ->where('journal_id', '>', $eventId->getValue())
+            ->exists();
     }
 }

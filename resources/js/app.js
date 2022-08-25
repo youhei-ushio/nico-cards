@@ -36,6 +36,30 @@ const loading = () => {
     document.getElementById('loading').classList.remove('invisible');
 }
 
+const polling = () => new Promise((resolve, reject) => {
+    const lastEventId = document.getElementById('polling').dataset.last_event_id;
+    axios.get(
+        `/game/round/polling?last_event_id=${lastEventId}`
+    ).then(response => {
+        resolve(response.data);
+    }).catch(error => {
+        reject(error);
+    });
+});
+
+setInterval(() => {
+    polling()
+        .then(proceeded => {
+            if (proceeded) {
+                clearTimeout();
+                location.reload();
+            }
+        })
+        .catch(() => {
+            clearTimeout();
+        });
+}, 1000);
+
 const startRound = (event) => {
     const member_id = event.target.dataset.member_id;
 

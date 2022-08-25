@@ -22,6 +22,8 @@ use Illuminate\Support\ViewErrorBag;
         {{ $view->room->name }}
     </x-slot>
 
+    <div id="polling" data-last_event_id="{{ $view->lastEventId }}"></div>
+
     @if ($view->hasRound())
         <div class="pt-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
