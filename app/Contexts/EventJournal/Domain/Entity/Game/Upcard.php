@@ -50,6 +50,18 @@ final class Upcard
     }
 
     /**
+     * @return string
+     */
+    public function toString(): string
+    {
+        return implode(',', array_map(
+            function (Value\Game\Card $card) {
+                return $card->toString();
+            }, $this->cards)
+        );
+    }
+
+    /**
      * @return UpcardSaveRecord
      */
     public function createSaveRecord(): UpcardSaveRecord

@@ -13,6 +13,7 @@ final class JournalRestoreRecord
      * @param string $type
      * @param int|null $roomId
      * @param int|null $memberId
+     * @param string|null $memberName
      * @param CardRestoreRecord[] $cards
      */
     public function __construct(
@@ -20,6 +21,7 @@ final class JournalRestoreRecord
         public readonly string $type,
         public readonly int|null $roomId,
         public readonly int|null $memberId,
+        public readonly string|null $memberName,
         public readonly array $cards,
     )
     {

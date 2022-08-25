@@ -27,3 +27,11 @@
 .hand.card:nth-child(n+8) {
     margin-top: -130px;
 }
+
+.spades, .clubs {
+    color: black;
+}
+
+.hearts, .diamonds {
+    color: red;
+}

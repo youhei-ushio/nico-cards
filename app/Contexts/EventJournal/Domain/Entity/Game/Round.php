@@ -69,9 +69,9 @@ final class Round
      *
      * @param Value\Member\Id $playerId
      * @param Value\Game\Card[] $cards
-     * @return void
+     * @return Upcard
      */
-    public function play(Value\Member\Id $playerId, array $cards): void
+    public function play(Value\Member\Id $playerId, array $cards): Upcard
     {
         $playCards = [];
         foreach ($this->players as $player) {
@@ -91,6 +91,7 @@ final class Round
         }
         $this->turn = $this->turn->next();
         $this->setNextTurnPlayer();
+        return $this->upcard;
     }
 
     /**

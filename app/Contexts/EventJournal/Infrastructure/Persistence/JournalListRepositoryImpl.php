@@ -20,6 +20,10 @@ final class JournalListRepositoryImpl implements JournalListRepository
     public function restore(Value\Room\Id $roomId): void
     {
         $this->rows = Models\Journal::query()
+            ->with([
+                'user',
+                'user.profile',
+            ])
             ->where('id', '>', function (Builder $builder) use ($roomId) {
                 $builder->selectRaw('ifnull(max(journal_id), 0)')
                     ->from('snapshots')

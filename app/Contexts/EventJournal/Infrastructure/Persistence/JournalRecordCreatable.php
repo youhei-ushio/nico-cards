@@ -25,6 +25,7 @@ trait JournalRecordCreatable
             type: $row['type'],
             roomId: $row['room_id'],
             memberId: $row['user_id'],
+            memberName: $row['user']['profile']['name'] ?? $row['user']['name'],
             cards: $cardRecords,
         );
     }

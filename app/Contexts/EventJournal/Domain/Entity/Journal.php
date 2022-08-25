@@ -26,6 +26,7 @@ final class Journal
         public readonly Value\Event\Type $type,
         public readonly Value\Room\Id|null $roomId,
         public readonly Value\Member\Id|null $memberId,
+        public readonly Value\Member\Name|null $memberName,
         public readonly array $cards,
     )
     {
@@ -81,6 +82,7 @@ final class Journal
             type: Value\Event\Type::fromString($record->type),
             roomId: Value\Room\Id::fromNumber($record->roomId),
             memberId: Value\Member\Id::fromNumber($record->memberId),
+            memberName: Value\Member\Name::fromString($record->memberName),
             cards: array_map(
                 function (CardRestoreRecord $cardRecord) {
                     return Value\Game\Card::restore($cardRecord);

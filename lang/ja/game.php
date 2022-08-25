@@ -8,9 +8,10 @@ return [
         'play' => '決定',
         'start' => 'ゲーム開始',
         'leave' => '退室',
+        'started' => 'ゲームが開始されました。',
         'cannot_play_card' => 'カードが出せません。',
         'cannot_pass' => 'パスできません。',
-        'passed_self' => 'パスしました。',
         'passed' => ':name がパスしました。',
+        'played' => ':name が :card を出しました。',
     ],
 ];

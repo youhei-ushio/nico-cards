@@ -210,4 +210,41 @@ final class Card implements JsonSerializable
             'number' => $this->number,
         ];
     }
+
+    /**
+     * @return string
+     */
+    public function toString(): string
+    {
+        $shortName = '';
+        if ($this->isJoker()) {
+            return '<span class="joker">&#x1f0cf;</span>';
+        }
+        switch ($this->suit) {
+            case self::SUIT_SPADES:
+                $shortName = '<span class="spades">&#x2660;</span>';
+                break;
+            case self::SUIT_HEARTS:
+                $shortName = '<span class="hearts">&#x2665;</span>';
+                break;
+            case self::SUIT_DIAMONDS:
+                $shortName = '<span class="diamonds">&#x2666;</span>';
+                break;
+            case self::SUIT_CLUBS:
+                $shortName = '<span class="clubs">&#x2663;</span>';
+                break;
+        }
+        if ($this->number === 1) {
+            $shortName .= 'A';
+        } elseif ($this->number === 11) {
+            $shortName .= 'J';
+        } elseif ($this->number === 12) {
+            $shortName .= 'Q';
+        } elseif ($this->number === 13) {
+            $shortName .= 'K';
+        } else {
+            $shortName .= $this->number;
+        }
+        return $shortName;
+    }
 }
