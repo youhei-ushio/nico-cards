@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Contexts\EventJournal\Domain\Persistence;
-
-use App\Contexts\Core\Domain\Persistence\CardSaveRecord;
+namespace App\Contexts\Core\Domain\Persistence;
 
 /**
  * リポジトリで利用するDTO
  */
-final class UpcardSaveRecord
+final class UpcardRestoreRecord
 {
     /**
      * @param int $playerId
-     * @param CardSaveRecord[] $cards
+     * @param CardRestoreRecord[] $cards
      */
     public function __construct(
         public readonly int $playerId,

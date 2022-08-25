@@ -10,6 +10,7 @@ use App\Contexts\Core\Domain\Persistence\RoundRestoreRecord;
 trait RoundRecordCreatable
 {
     use PlayerRecordCreatable;
+    use UpcardRecordCreatable;
 
     private function createRoundRecord(array $row): RoundRestoreRecord
     {
@@ -17,17 +18,10 @@ trait RoundRecordCreatable
             return $this->createPlayerRecord($userRow);
         }, $row['users'] ?? []);
 
-        $upcards = array_map(function (array $cardRow) {
-            return new CardRestoreRecord(
-                $cardRow['suit'],
-                $cardRow['number'],
-            );
-        }, $row['upcards'] ?? []);
-
         return new RoundRestoreRecord(
             id: $row['id'],
             roomId: $row['room_id'],
-            upcards: $upcards,
+            upcard: self::createUpcardRecord($row['upcards'] ?? []),
             turn: $row['turn'],
             reversed: $row['reversed'] === 1,
             playerRecords: $players,

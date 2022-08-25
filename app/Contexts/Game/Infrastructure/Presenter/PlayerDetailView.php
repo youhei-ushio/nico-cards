@@ -35,7 +35,15 @@ final class PlayerDetailView
     }
 
     /**
-     * @param int $index
+     * @return bool
+     */
+    public function hasRound(): bool
+    {
+        return $this->round !== null;
+    }
+
+    /**
+     * @param Value\Member\Id $memberId
      * @return string
      */
     public function getPlayerImagePath(Value\Member\Id $memberId): string

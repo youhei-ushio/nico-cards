@@ -6,6 +6,7 @@ namespace App\Contexts\Game\UseCase\Round\Detail;
 
 use App\Contexts\Core\Domain\Persistence\EventMessageListRepository;
 use App\Contexts\Core\Domain\Value;
+use App\Contexts\Game\Domain\Exception\RoundNotFoundException;
 use App\Contexts\Game\Domain\Persistence\MemberRepository;
 use App\Contexts\Game\Domain\Persistence\RoomRepository;
 use App\Contexts\Game\Domain\Persistence\RoundRepository;

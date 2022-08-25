@@ -13,6 +13,7 @@ return new class() extends Migration
         Schema::create('round_upcards', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('round_id')->comment('対戦ラウンドID');
+            $table->unsignedBigInteger('user_id')->comment('メンバーID');
             $table->string('suit', 10)->comment('カードのシンボル');
             $table->unsignedTinyInteger('number')->comment('カードの数字');
             $table->timestamps();

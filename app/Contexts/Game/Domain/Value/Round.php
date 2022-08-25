@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Contexts\Game\Domain\Value;
 
-use App\Contexts\Core\Domain\Persistence\CardRestoreRecord;
 use App\Contexts\Core\Domain\Persistence\RoundRestoreRecord;
 use App\Contexts\Core\Domain\Value;
 use App\Contexts\Core\Domain\Value\Member\Id;
@@ -18,7 +17,7 @@ final class Round
     /**
      * newによるインスタンス化はさせない
      *
-     * @param Value\Game\Card[] $upcards 場札
+     * @param Value\Game\Upcard|null $upcard 場札
      * @param Value\Game\Round\Turn $turn ターン
      * @param bool $reversed 革命による反転中かどうか
      * @param Player $player プレイヤー（自分）
@@ -26,7 +25,7 @@ final class Round
      * @see restore()
      */
     private function __construct(
-        public readonly array $upcards,
+        public readonly Value\Game\Upcard|null $upcard,
         public readonly Value\Game\Round\Turn $turn,
         public readonly bool $reversed,
         public readonly Player $player,
@@ -60,9 +59,7 @@ final class Round
             throw new RoundNotFoundException();
         }
         return new self(
-            upcards: array_map(function (CardRestoreRecord $record) {
-                return Value\Game\Card::restore($record);
-            }, $record->upcards),
+            upcard: Value\Game\Upcard::restore($record->upcard),
             turn: Value\Game\Round\Turn::fromNumber($record->turn),
             reversed: $record->reversed,
             player: $player,

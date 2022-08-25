@@ -4,23 +4,21 @@ declare(strict_types=1);
 
 namespace App\Contexts\EventJournal\Domain\Entity\Game;
 
-use App\Contexts\Core\Domain\Persistence\CardRestoreRecord;
 use App\Contexts\Core\Domain\Persistence\CardSaveRecord;
 use App\Contexts\Core\Domain\Persistence\PlayerSaveRecord;
 use App\Contexts\Core\Domain\Persistence\RoundRestoreRecord;
 use App\Contexts\Core\Domain\Value;
-use App\Contexts\EventJournal\Domain\Exception\CannotPlayCardException;
+use App\Contexts\EventJournal\Domain\Exception\CannotPassException;
 use App\Contexts\EventJournal\Domain\Exception\TurnPlayerNotFoundException;
 use App\Contexts\EventJournal\Domain\Persistence\RoundRepository;
 use App\Contexts\EventJournal\Domain\Persistence\RoundSaveRecord;
-use App\Contexts\EventJournal\Domain\Persistence\UpcardSaveRecord;
 
 final class Round
 {
     /**
      * @param Value\Game\Round\Id|null $id ラウンドID
      * @param Value\Room\Id $roomId 部屋ID
-     * @param Value\Game\Card[] $upcards 場札
+     * @param Upcard|null $upcard 場札
      * @param Value\Game\Round\Turn $turn ターン
      * @param bool $reversed 革命による反転中かどうか
      * @param Player[] $players 全てのプレイヤー
@@ -28,7 +26,7 @@ final class Round
     private function __construct(
         private readonly Value\Game\Round\Id|null $id,
         private readonly Value\Room\Id $roomId,
-        private array $upcards,
+        private Upcard|null $upcard,
         private Value\Game\Round\Turn $turn,
         private bool $reversed,
         private array $players,
@@ -85,12 +83,12 @@ final class Round
             }
         }
 
-        $rule = new Value\Game\Rule($this->upcards, $playCards);
-        if (!$rule->playable()) {
-            throw new CannotPlayCardException();
+        if ($this->upcard === null) {
+            $this->upcard = Upcard::create($playerId, $playCards);
+        } else {
+            $this->upcard->validate($playCards, new Value\Game\Rule($this->reversed));
+            $this->upcard->play($playerId, $playCards);
         }
-
-        $this->upcards = $playCards;
         $this->turn = $this->turn->next();
         $this->setNextTurnPlayer();
     }
@@ -98,13 +96,20 @@ final class Round
     /**
      * パスする
      *
-     * @param Value\Member\Id $playerId
      * @return void
      */
-    public function pass(Value\Member\Id $playerId): void
+    public function pass(): void
     {
+        if ($this->upcard === null) {
+            throw new CannotPassException();
+        }
         $this->turn = $this->turn->next();
-        $this->setNextTurnPlayer();
+        $nextPlayer = $this->setNextTurnPlayer();
+
+        // 場札が次ターンのプレイヤーが出したものなら場札を流す
+        if ($this->upcard->playerId->equals($nextPlayer->id)) {
+            $this->upcard = null;
+        }
     }
 
     /**
@@ -133,14 +138,7 @@ final class Round
                         $player->onTurn,
                     );
                 }, $this->players),
-            upcards: array_map(
-                function (Value\Game\Card $card) {
-                    return new UpcardSaveRecord(
-                        $this->id->getValue(),
-                        $card->suit,
-                        $card->number,
-                    );
-                }, $this->upcards),
+            upcard: $this->upcard?->createSaveRecord(),
         ));
     }
 
@@ -154,7 +152,7 @@ final class Round
         return new self(
             id: null,
             roomId: $room->id,
-            upcards: [],
+            upcard: null,
             turn: Value\Game\Round\Turn::first(),
             reversed: false,
             players: $players,
@@ -170,11 +168,7 @@ final class Round
         return new self(
             id: Value\Game\Round\Id::fromNumber($record->id),
             roomId: Value\Room\Id::fromNumber($record->roomId),
-            upcards: array_map(
-                function (CardRestoreRecord $cardRecord) {
-                    return Value\Game\Card::restore($cardRecord);
-                },
-                $record->upcards),
+            upcard: Upcard::restore($record->upcard),
             turn: Value\Game\Round\Turn::fromNumber($record->turn),
             reversed: $record->reversed,
             players: Player::restoreList($record->playerRecords),
@@ -184,9 +178,9 @@ final class Round
     /**
      * 次ターンのプレイヤーを設定する
      *
-     * @return void
+     * @return Player 設定された次ターンのプレイヤー
      */
-    private function setNextTurnPlayer(): void
+    private function setNextTurnPlayer(): Player
     {
         foreach ($this->players as $index => $player) {
             if (!$player->onTurn) {
@@ -195,10 +189,11 @@ final class Round
             $this->players[$index]->onTurn = false;
             if (isset($this->players[$index + 1])) {
                 $this->players[$index + 1]->onTurn = true;
+                return $this->players[$index + 1];
             } else {
                 $this->players[0]->onTurn = true;
+                return $this->players[0];
             }
-            return;
         }
         throw new TurnPlayerNotFoundException();
     }

@@ -12,7 +12,7 @@ final class RoundRestoreRecord
     /**
      * @param int $id
      * @param int $roomId
-     * @param CardRestoreRecord[] $upcards
+     * @param UpcardRestoreRecord|null $upcard
      * @param int $turn
      * @param bool $reversed
      * @param PlayerRestoreRecord[] $playerRecords
@@ -20,7 +20,7 @@ final class RoundRestoreRecord
     public function __construct(
         public readonly int $id,
         public readonly int $roomId,
-        public readonly array $upcards,
+        public readonly UpcardRestoreRecord|null $upcard,
         public readonly int $turn,
         public readonly bool $reversed,
         public readonly array $playerRecords,

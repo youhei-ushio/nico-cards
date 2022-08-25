@@ -15,7 +15,7 @@ final class RoundSaveRecord
      * @param bool $reversed
      * @param bool $finished
      * @param PlayerSaveRecord[] $players
-     * @param UpcardSaveRecord[] $upcards
+     * @param UpcardSaveRecord|null $upcard
      */
     public function __construct(
         public readonly int|null $id,
@@ -24,7 +24,7 @@ final class RoundSaveRecord
         public readonly bool $reversed,
         public readonly bool $finished,
         public readonly array $players,
-        public readonly array $upcards,
+        public readonly UpcardSaveRecord|null $upcard,
     )
     {
 

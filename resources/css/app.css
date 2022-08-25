@@ -20,6 +20,10 @@
     margin-top: -130px;
 }
 
-.hand.card:nth-child(n+15) {
+.my-hand {
+    width: 650px;
+}
+
+.hand.card:nth-child(n+8) {
     margin-top: -130px;
 }

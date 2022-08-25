@@ -7,6 +7,9 @@ return [
         'turn' => '<span class="text-4xl font-bold">:turn</span> ターン目',
         'play' => '決定',
         'cannot_play_card' => 'カードが出せません。',
+        'cannot_pass' => 'パスできません。',
+        'passed_self' => 'パスしました。',
+        'passed' => ':name がパスしました。',
     ],
     'room' => [
         'start' => 'ゲーム開始',

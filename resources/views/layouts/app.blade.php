@@ -28,6 +28,10 @@
             <main>
                 {{ $slot }}
             </main>
+
+            <div id="loading" class="invisible absolute inset-0 opacity-25 flex items-center justify-center w-screen h-screen bg-white">
+                <div class="animate-spin h-10 w-10 border-4 border-blue-500 rounded-full border-t-transparent"></div>
+            </div>
         </div>
     </body>
 </html>

@@ -12,7 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
-use Spatie\RouteAttributes\Attributes\Get;
+use Spatie\RouteAttributes\Attributes\Post;
 
 /**
  * ゲーム開始
@@ -26,7 +26,7 @@ final class StartController extends Controller
      * @param Interactor $interactor
      * @return Application|RedirectResponse|Redirector
      */
-    #[Get('/game/round/start', 'game.round.start')]
+    #[Post('/game/round/start', 'game.round.start')]
     public function __invoke(
         StartRequest $request,
         Interactor $interactor,

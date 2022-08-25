@@ -93,10 +93,12 @@ final class Card implements JsonSerializable
     }
 
     /**
+     * より強いかどうか
+     *
      * @param Card $card
      * @return bool
      */
-    public function greaterThan(self $card): bool
+    public function strongerThan(self $card): bool
     {
         if (self::isJoker() && $card->isJoker()) {
             return false;
@@ -111,10 +113,12 @@ final class Card implements JsonSerializable
     }
 
     /**
+     * より弱いかどうか
+     *
      * @param Card $card
      * @return bool
      */
-    public function lessThan(self $card): bool
+    public function weakerThan(self $card): bool
     {
         if (self::isJoker() && $card->isJoker()) {
             return false;

@@ -16,7 +16,34 @@ document.querySelectorAll('.card.playable').forEach(element => {
     });
 });
 
-document.getElementById('play_button').addEventListener('click', () => {
+document.addEventListener('click', event => {
+    if (event.target.id === 'start_button') {
+        startRound(event);
+    } else if (event.target.id === 'play_button') {
+        playCard();
+    }
+});
+
+const loading = () => {
+    document.getElementById('loading').classList.remove('invisible');
+}
+
+const startRound = (event) => {
+    const member_id = event.target.dataset.member_id;
+
+    loading();
+
+    axios.post(
+        '/game/round/start',
+        { member_id: member_id }
+    ).then(() => {
+        location.reload();
+    }).catch(error => {
+        console.error(error);
+    });
+};
+
+const playCard = () => {
     const room_id = document.querySelector('.board').dataset.room_id;
     const member_id = document.querySelector('.board .play').dataset.member_id;
 
@@ -28,6 +55,8 @@ document.getElementById('play_button').addEventListener('click', () => {
         });
     });
 
+    loading();
+
     axios.post(
         '/game/round/play',
         { room_id: room_id, member_id: member_id, cards: cards }
@@ -36,4 +65,4 @@ document.getElementById('play_button').addEventListener('click', () => {
     }).catch(error => {
         console.error(error);
     });
-});
+};

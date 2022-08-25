@@ -101,12 +101,13 @@ final class RoundRepositoryImpl implements RoundRepository
             Models\RoundUpcards::query()
                 ->where('round_id', $roundRow->id)
                 ->delete();
-            foreach ($record->upcards as $upcardRecord) {
+            foreach ($record->upcard->cards ?? [] as $cardRecord) {
                 (new Models\RoundUpcards())
                     ->fill([
                         'round_id' => $roundRow->id,
-                        'suit' => $upcardRecord->suit,
-                        'number' => $upcardRecord->number,
+                        'user_id' => $record->upcard->playerId,
+                        'suit' => $cardRecord->suit,
+                        'number' => $cardRecord->number,
                     ])
                     ->saveOrFail();
             }
