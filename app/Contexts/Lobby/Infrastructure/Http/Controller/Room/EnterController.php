@@ -38,6 +38,7 @@ final class EnterController extends Controller
             Value\Room\Id::fromString($input['room_id']),
         );
         $event->save($repository);
-        return redirect(route('dashboard'));
+        $repository->waitForLastEvent();
+        return redirect(route('game.round.detail'));
     }
 }

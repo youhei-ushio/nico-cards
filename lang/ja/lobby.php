@@ -7,7 +7,7 @@ return [
             'member_count' => ':count 名',
             'enter' => '入室',
             'full' => '満員',
-            'leave' => '退室',
+            'return' => '戻る',
         ],
         'entered_self' => ':room に入室しました。',
         'entered' => ':name が入室しました。',

@@ -38,6 +38,7 @@ final class LeaveController extends Controller
             Value\Room\Id::fromString($input['room_id']),
         );
         $event->save($repository);
+        $repository->waitForLastEvent();
         return redirect(route('dashboard'));
     }
 }

@@ -21,7 +21,15 @@ document.addEventListener('click', event => {
         startRound(event);
     } else if (event.target.id === 'play_button') {
         playCard();
+    } else if (event.target.id === 'leave_button') {
+        leaveRoom(event);
     }
+});
+
+document.querySelectorAll('a.room').forEach(element => {
+    element.addEventListener('click', () => {
+        loading();
+    });
 });
 
 const loading = () => {
@@ -60,6 +68,20 @@ const playCard = () => {
     axios.post(
         '/game/round/play',
         { room_id: room_id, member_id: member_id, cards: cards }
+    ).then(() => {
+        location.reload();
+    }).catch(error => {
+        console.error(error);
+    });
+};
+
+const leaveRoom = (event) => {
+    const member_id = event.target.dataset.member_id;
+
+    loading();
+
+    axios.get(
+        `/lobby/rooms/${member_id}/leave`
     ).then(() => {
         location.reload();
     }).catch(error => {
