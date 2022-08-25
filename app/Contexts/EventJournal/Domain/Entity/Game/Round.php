@@ -9,6 +9,7 @@ use App\Contexts\Core\Domain\Persistence\CardSaveRecord;
 use App\Contexts\Core\Domain\Persistence\PlayerSaveRecord;
 use App\Contexts\Core\Domain\Persistence\RoundRestoreRecord;
 use App\Contexts\Core\Domain\Value;
+use App\Contexts\EventJournal\Domain\Exception\CannotPlayCardException;
 use App\Contexts\EventJournal\Domain\Exception\TurnPlayerNotFoundException;
 use App\Contexts\EventJournal\Domain\Persistence\RoundRepository;
 use App\Contexts\EventJournal\Domain\Persistence\RoundSaveRecord;
@@ -74,19 +75,34 @@ final class Round
      */
     public function play(Value\Member\Id $playerId, array $cards): void
     {
-        $upcards = [];
+        $playCards = [];
         foreach ($this->players as $player) {
             if (!$player->id->equals($playerId)) {
                 continue;
             }
             foreach ($cards as $card) {
-                $upcards[] = $player->play($card->suit, $card->number);
+                $playCards[] = $player->play($card->suit, $card->number);
             }
         }
 
-        //TODO:出せる役かどうか確認
+        $rule = new Value\Game\Rule($this->upcards, $playCards);
+        if (!$rule->playable()) {
+            throw new CannotPlayCardException();
+        }
 
-        $this->upcards = $upcards;
+        $this->upcards = $playCards;
+        $this->turn = $this->turn->next();
+        $this->setNextTurnPlayer();
+    }
+
+    /**
+     * パスする
+     *
+     * @param Value\Member\Id $playerId
+     * @return void
+     */
+    public function pass(Value\Member\Id $playerId): void
+    {
         $this->turn = $this->turn->next();
         $this->setNextTurnPlayer();
     }

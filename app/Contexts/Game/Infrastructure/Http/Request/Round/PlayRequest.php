@@ -31,7 +31,7 @@ final class PlayRequest extends FormRequest
                 'integer',
             ],
             'cards' => [
-                'required',
+                'nullable',
                 'array',
             ],
             'cards.*.suit' => [

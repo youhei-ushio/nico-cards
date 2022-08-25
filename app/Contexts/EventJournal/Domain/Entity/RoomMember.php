@@ -19,11 +19,13 @@ final class RoomMember
      * newによるインスタンス化はさせない
      *
      * @param Value\Member\Id $id
+     * @param Value\Member\Name $name
      * @param Value\Room|null $room
      * @see restore()
      */
     private function __construct(
         private readonly Value\Member\Id $id,
+        public readonly Value\Member\Name $name,
         private Value\Room|null $room,
     )
     {
@@ -75,6 +77,15 @@ final class RoomMember
     }
 
     /**
+     * @param Value\Member $member
+     * @return bool
+     */
+    public function equals(Value\Member $member): bool
+    {
+        return $this->id->equals($member->id);
+    }
+
+    /**
      * 永続化されたエンティティを復元する
      *
      * @param RoomMemberRestoreRecord $record
@@ -88,6 +99,7 @@ final class RoomMember
         }
         return new self(
             id: Value\Member\Id::fromNumber($record->id),
+            name: Value\Member\Name::fromString($record->name),
             room: $room,
         );
     }
@@ -100,6 +112,9 @@ final class RoomMember
      */
     public function save(RoomMemberRepository $repository): void
     {
-        $repository->save(new RoomMemberSaveRecord($this->id, $this->room));
+        $repository->save(new RoomMemberSaveRecord(
+            $this->id->getValue(),
+            $this->room?->id?->getValue(),
+        ));
     }
 }

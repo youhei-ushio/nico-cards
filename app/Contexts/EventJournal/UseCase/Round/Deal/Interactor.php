@@ -19,7 +19,7 @@ final class Interactor
 
     public function execute(Journal $journal): void
     {
-        $round = Round::restore($this->roundRepository->restore($journal->roomId));
+        $round = Round::restore($this->roundRepository->restore($journal->memberId));
         $round->deal($journal->memberId, $journal->cards);
         $round->save($this->roundRepository);
     }

@@ -17,6 +17,7 @@ final class PlayerDetailView
         public readonly Value\Member $member,
         public readonly Value\Room $room,
         public readonly Round|null $round,
+        public readonly Value\Event\MessageCollection $messages,
     )
     {
 

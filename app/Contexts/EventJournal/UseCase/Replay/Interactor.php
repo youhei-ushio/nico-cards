@@ -15,6 +15,7 @@ use App\Contexts\EventJournal\UseCase\Round\Create\Interactor as RoundCreateInte
 use App\Contexts\EventJournal\UseCase\Round\Deal\Interactor as RoundDealInteractor;
 use App\Contexts\EventJournal\UseCase\Round\Start\Interactor as RoundStartInteractor;
 use App\Contexts\EventJournal\UseCase\Round\Play\Interactor as RoundPlayInteractor;
+use App\Contexts\EventJournal\UseCase\Round\Pass\Interactor as RoundPassInteractor;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -29,6 +30,7 @@ final class Interactor
         private readonly RoundDealInteractor $roundDeal,
         private readonly RoundStartInteractor $roundStart,
         private readonly RoundPlayInteractor $roundPlay,
+        private readonly RoundPassInteractor $roundPass,
     )
     {
 
@@ -64,6 +66,8 @@ final class Interactor
                         $this->roundStart->execute($journal);
                     } elseif ($journal->type->equals('play')) {
                         $this->roundPlay->execute($journal);
+                    } elseif ($journal->type->equals('pass')) {
+                        $this->roundPass->execute($journal);
                     } else {
                         throw new UnknownEventException();
                     }

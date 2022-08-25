@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Contexts\EventJournal\Domain\Persistence;
 
-use App\Contexts\Core\Domain\Value;
-
 /**
  * リポジトリで利用するDTO
  *
@@ -14,8 +12,8 @@ use App\Contexts\Core\Domain\Value;
 final class RoomMemberSaveRecord
 {
     public function __construct(
-        public readonly Value\Member\Id $id,
-        public readonly Value\Room|null $room,
+        public readonly int $memberId,
+        public readonly int|null $roomId,
     )
     {
 

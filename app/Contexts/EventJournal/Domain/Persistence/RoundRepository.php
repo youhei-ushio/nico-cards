@@ -13,10 +13,10 @@ use App\Contexts\Core\Domain\Value;
 interface RoundRepository
 {
     /**
-     * @param Value\Room\Id $id
+     * @param Value\Member\Id $memberId
      * @return RoundRestoreRecord|null
      */
-    public function restore(Value\Room\Id $id): RoundRestoreRecord|null;
+    public function restore(Value\Member\Id $memberId): RoundRestoreRecord|null;
 
     /**
      * @param RoundSaveRecord $record

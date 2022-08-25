@@ -34,6 +34,6 @@ final class StartController extends Controller
     {
         $input = $request->validated();
         $interactor->execute(new Input(Value\Member\Id::fromNumber($input['member_id'])));
-        return redirect(route('game.round.detail'));
+        return redirect()->back();
     }
 }

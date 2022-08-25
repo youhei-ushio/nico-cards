@@ -44,6 +44,7 @@ final class DetailController extends Controller
             $output->member,
             $output->room,
             $output->round,
+            $output->messages,
         );
         return $view->render();
     }

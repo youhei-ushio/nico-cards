@@ -22,7 +22,10 @@ final class StartRequest extends FormRequest
     public function rules(): array
     {
         return [
-
+            'member_id' => [
+                'nullable',
+                'integer',
+            ],
         ];
     }
 
@@ -36,6 +39,11 @@ final class StartRequest extends FormRequest
     public function validated($key = null, $default = null)
     {
         $values = parent::validated($key, $default);
+        if (!empty($values['member_id']) && app()->environment('local')) {
+            // ローカルデバッグ用
+            $values['member_id'] = intval($values['member_id']);
+            return $values;
+        }
         $values['member_id'] = auth()->user()->id;
         return $values;
     }

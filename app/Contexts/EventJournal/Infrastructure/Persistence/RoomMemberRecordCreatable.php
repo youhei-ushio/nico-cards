@@ -18,8 +18,9 @@ trait RoomMemberRecordCreatable
             $room = $this->createRoomRecord($row['rooms'][0]);
         }
         return new RoomMemberRestoreRecord(
-            $row['id'],
-            $room,
+            id: $row['id'],
+            name: $row['profile']['name'] ?? $row['name'],
+            roomRecord: $room,
         );
     }
 }

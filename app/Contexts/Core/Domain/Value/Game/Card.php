@@ -35,12 +35,28 @@ final class Card implements JsonSerializable
     private const JOKER_NUMBER = 100;
 
     /** @var string[] */
-    protected const SUITS = [
+    private const SUITS = [
         self::SUIT_SPADES,
         self::SUIT_HEARTS,
         self::SUIT_CLUBS,
         self::SUIT_DIAMONDS,
         self::JOKER,
+    ];
+
+    private const STRENGTHS = [
+        3 => 1,
+        4 => 2,
+        5 => 3,
+        6 => 4,
+        7 => 5,
+        8 => 6,
+        9 => 7,
+        10 => 8,
+        11 => 9,
+        12 => 10,
+        13 => 11,
+        1 => 12,
+        2 => 13,
     ];
 
     public function __construct(
@@ -74,6 +90,42 @@ final class Card implements JsonSerializable
     public function isStartCard(): bool
     {
         return $this->suit === self::SUIT_DIAMONDS && $this->number === 3;
+    }
+
+    /**
+     * @param Card $card
+     * @return bool
+     */
+    public function greaterThan(self $card): bool
+    {
+        if (self::isJoker() && $card->isJoker()) {
+            return false;
+        }
+        if (self::isJoker() && !$card->isJoker()) {
+            return true;
+        }
+        if (!self::isJoker() && $card->isJoker()) {
+            return false;
+        }
+        return self::STRENGTHS[$this->number] > self::STRENGTHS[$card->number];
+    }
+
+    /**
+     * @param Card $card
+     * @return bool
+     */
+    public function lessThan(self $card): bool
+    {
+        if (self::isJoker() && $card->isJoker()) {
+            return false;
+        }
+        if (!self::isJoker() && $card->isJoker()) {
+            return true;
+        }
+        if (self::isJoker() && !$card->isJoker()) {
+            return false;
+        }
+        return self::STRENGTHS[$this->number] < self::STRENGTHS[$card->number];
     }
 
     /**

@@ -23,7 +23,7 @@ final class Interactor
 
     public function execute(Journal $journal): void
     {
-        $roundRecord = $this->roundRepository->restore($journal->roomId);
+        $roundRecord = $this->roundRepository->restore($journal->memberId);
         if ($roundRecord !== null) {
             // すでに対戦中の場合は何もしない
             return;

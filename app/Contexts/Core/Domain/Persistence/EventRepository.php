@@ -6,5 +6,14 @@ namespace App\Contexts\Core\Domain\Persistence;
 
 interface EventRepository
 {
+    /**
+     * @param EventSaveRecord $record
+     * @return void
+     */
     public function save(EventSaveRecord $record): void;
+
+    /**
+     * @return void
+     */
+    public function waitForLastEvent(): void;
 }

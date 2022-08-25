@@ -43,17 +43,17 @@ final class RoomMemberRepositoryImpl implements RoomMemberRepository
     {
         DB::transaction(function () use ($record) {
             Models\RoomUser::query()
-                ->where('user_id', $record->id->getValue())
+                ->where('user_id', $record->memberId)
                 ->delete();
 
-            if ($record->room === null) {
+            if ($record->roomId === null) {
                 return;
             }
 
             $row = new Models\RoomUser();
             $row->fill([
-                'user_id' => $record->id->getValue(),
-                'room_id' => $record->room->id->getValue(),
+                'user_id' => $record->memberId,
+                'room_id' => $record->roomId,
             ]);
             $row->saveOrFail();
         });

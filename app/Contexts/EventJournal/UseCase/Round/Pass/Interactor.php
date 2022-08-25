@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Contexts\EventJournal\UseCase\Round\Play;
+namespace App\Contexts\EventJournal\UseCase\Round\Pass;
 
 use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\Domain\Entity\Game\Round;

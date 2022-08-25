@@ -15,3 +15,11 @@
     margin-top: -215px;
     margin-left: 50px;
 }
+
+.board .play .card:nth-child(n+6) {
+    margin-top: -130px;
+}
+
+.hand.card:nth-child(n+15) {
+    margin-top: -130px;
+}

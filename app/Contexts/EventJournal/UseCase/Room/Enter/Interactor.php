@@ -11,6 +11,7 @@ use App\Contexts\EventJournal\Domain\Persistence\EventMessageRepository;
 use App\Contexts\EventJournal\Domain\Persistence\EventMessageSaveRecord;
 use App\Contexts\EventJournal\Domain\Persistence\RoomMemberRepository;
 use App\Contexts\EventJournal\Domain\Persistence\RoomRepository;
+use App\Contexts\EventJournal\Domain\Persistence\RoundRepository;
 
 final class Interactor
 {
@@ -28,33 +29,48 @@ final class Interactor
         $room = Value\Room::restore($this->roomRepository->restore($journal->roomId));
         if ($room->isFull) {
             $this->eventMessageRepository->save(new EventMessageSaveRecord(
-                $journal,
-                Value\Event\Message\Body::fromString(__('lobby.room.room_is_full', ['name' => $room->name])),
-                Value\Event\Message\Level::error(),
+                $journal->id->getValue(),
+                $journal->memberId->getValue(),
+                __('lobby.room.room_is_full', ['name' => $room->name]),
+                Value\Event\Message\Level::error()->getValue(),
             ));
             return;
         }
-        $member = RoomMember::restore($this->roomMemberRepository->restore($journal->memberId));
-        if ($member->isIn($room)) {
+
+        $self = RoomMember::restore($this->roomMemberRepository->restore($journal->memberId));
+        if ($self->isIn($room)) {
             // 同じ部屋にいる場合は何もしない
             return;
         }
-        if (!$member->isInLobby()) {
+        if (!$self->isInLobby()) {
             $this->eventMessageRepository->save(new EventMessageSaveRecord(
-                $journal,
-                Value\Event\Message\Body::fromString(__('lobby.room.leave_first')),
-                Value\Event\Message\Level::error(),
+                $journal->id->getValue(),
+                $journal->memberId->getValue(),
+                __('lobby.room.leave_first'),
+                Value\Event\Message\Level::error()->getValue(),
             ));
             return;
         }
 
-        $member->enter($room);
-        $member->save($this->roomMemberRepository);
+        $self->enter($room);
+        $self->save($this->roomMemberRepository);
 
-        $this->eventMessageRepository->save(new EventMessageSaveRecord(
-            $journal,
-            Value\Event\Message\Body::fromString(__('lobby.room.entered', ['name' => $room->name])),
-            Value\Event\Message\Level::info(),
-        ));
+        foreach ($room->members as $member) {
+            if ($self->equals($member)) {
+                $this->eventMessageRepository->save(new EventMessageSaveRecord(
+                    $journal->id->getValue(),
+                    $journal->memberId->getValue(),
+                    __('lobby.room.entered_self', ['room' => $room->name]),
+                    Value\Event\Message\Level::info()->getValue(),
+                ));
+            } else {
+                $this->eventMessageRepository->save(new EventMessageSaveRecord(
+                    $journal->id->getValue(),
+                    $member->id->getValue(),
+                    __('lobby.room.entered', ['name' => $self->name]),
+                    Value\Event\Message\Level::info()->getValue(),
+                ));
+            }
+        }
     }
 }

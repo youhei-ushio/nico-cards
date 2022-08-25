@@ -22,7 +22,7 @@ final class RoundRepositoryImpl implements RoundRepository
     /**
      * @inheritDoc
      */
-    public function restore(Value\Room\Id $id): RoundRestoreRecord|null
+    public function restore(Value\Member\Id $memberId): RoundRestoreRecord|null
     {
         try {
             $row = Models\Round::query()
@@ -36,15 +36,15 @@ final class RoundRepositoryImpl implements RoundRepository
                 ])
                 ->whereHas('room')
                 ->whereHas('users')
-                ->where('room_id', function (Builder $builder) use ($id) {
+                ->where('room_id', function (Builder $builder) use ($memberId) {
                     $builder->select('room_id')
                         ->distinct()
                         ->from('room_users')
-                        ->where('user_id', $id->getValue());
+                        ->where('user_id', $memberId->getValue());
                 })
                 ->firstOrFail()
                 ->toArray();
-            $row['member_id'] = $id->getValue();
+            $row['member_id'] = $memberId->getValue();
             return $this->createRoundRecord($row);
         } catch (ModelNotFoundException) {
             return null;
@@ -54,6 +54,7 @@ final class RoundRepositoryImpl implements RoundRepository
     /**
      * @inheritDoc
      * @throws Throwable
+     * @noinspection PhpUndefinedFieldInspection
      */
     public function save(RoundSaveRecord $record): void
     {

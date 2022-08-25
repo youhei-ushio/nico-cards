@@ -6,6 +6,7 @@ namespace App\Contexts\Game\UseCase\Round\Play;
 
 use App\Contexts\Core\Domain\Persistence\EventRepository;
 use App\Contexts\Core\Domain\Value;
+use App\Contexts\Game\Domain\Event\Passed;
 use App\Contexts\Game\Domain\Event\Played;
 use App\Contexts\Game\Domain\Persistence\RoomRepository;
 
@@ -22,11 +23,19 @@ final class Interactor
     public function execute(Input $input): void
     {
         $room = Value\Room::restore($this->roomRepository->restore($input->memberId));
-        $event = new Played(
-            memberId: $input->memberId,
-            roomId: $room->id,
-            cards: $input->cards,
-        );
+        if (count($input->cards) === 0) {
+            $event = new Passed(
+                memberId: $input->memberId,
+                roomId: $room->id,
+            );
+        } else {
+            $event = new Played(
+                memberId: $input->memberId,
+                roomId: $room->id,
+                cards: $input->cards,
+            );
+        }
         $event->save($this->eventRepository);
+        $this->eventRepository->waitForLastEvent();
     }
 }
