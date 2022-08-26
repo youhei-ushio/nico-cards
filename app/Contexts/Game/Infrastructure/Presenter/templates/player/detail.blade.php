@@ -76,17 +76,6 @@ use Illuminate\Support\ViewErrorBag;
 
                                 </div>
                             </div>
-                            <div class="flex flex-col items-center justify-center bg-white rounded-lg border border-gray-400 shadow-md md:flex-row md:max-w-xl dark:border-gray-700 dark:bg-gray-800 h-56 {{ $view->round->player->onTurn ? 'bg-yellow-200' : 'bg-white' }}">
-                                <div class="mt-6">
-                                    <img src="{{ $view->getPlayerImagePath($view->member->id) }}" alt="player" class="object-cover h-20 rounded-t-lg md:rounded-none md:rounded-l-lg">
-                                    <h4 class="text-2xl">{{ $view->member->name }}</h4>
-                                    @if ($view->round->player->onTurn)
-                                        <button id="play_button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-2">
-                                            {{ __('game.round.play') }}
-                                        </button>
-                                    @endif
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -95,11 +84,27 @@ use Illuminate\Support\ViewErrorBag;
 
         <div class="pt-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="my-hand p-6 bg-white border-b border-gray-200 pl-20 ml-auto mr-auto">
-                        @foreach($view->round->player->hand as $card)
-                            <img src="{{ $view->getCardImagePath($card) }}" alt="hand" class="hand card {{ $view->round->player->onTurn ? 'playable' : '' }} object-cover h-48 rounded-t-lg md:rounded-none md:rounded-l-lg cursor-pointer" data-suit="{{ $card->suit }}" data-number="{{ $card->number }}">
-                        @endforeach
+                <div class="p-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="grid gap-8 space-x-1 lg:grid-cols-8">
+                        <div class="flex flex-col col-span-6">
+                            <div class="my-hand p-6 bg-white border-b border-gray-200 pl-20 ml-auto mr-auto">
+                                @foreach($view->round->player->hand as $card)
+                                    <img src="{{ $view->getCardImagePath($card) }}" alt="hand" class="hand card {{ $view->round->player->onTurn ? 'playable' : '' }} object-cover h-48 rounded-t-lg md:rounded-none md:rounded-l-lg cursor-pointer" data-suit="{{ $card->suit }}" data-number="{{ $card->number }}">
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="flex flex-col col-span-2 p-6 items-center justify-center rounded-lg border border-gray-400 shadow-md dark:border-gray-700 dark:bg-gray-800 {{ $view->round->player->onTurn ? 'bg-yellow-200' : 'bg-white' }}">
+                            <img src="{{ $view->getPlayerImagePath($view->member->id) }}" alt="player" class="object-cover h-20 rounded-t-lg md:rounded-none md:rounded-l-lg">
+                            @if ($view->round->player->onTurn)
+                                <button id="play_button" class="text-white w-40 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-3">
+                                    {{ __('game.round.play') }}
+                                </button>
+
+                                <button id="pass_button" class="text-gray-900 w-40 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 mt-3">
+                                    {{ __('game.round.pass') }}
+                                </button>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

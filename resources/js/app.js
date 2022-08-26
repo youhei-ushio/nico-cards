@@ -21,6 +21,8 @@ document.addEventListener('click', event => {
         startRound(event);
     } else if (event.target.id === 'play_button') {
         playCard();
+    } else if (event.target.id === 'pass_button') {
+        passTurn();
     } else if (event.target.id === 'leave_button') {
         leaveRoom(event);
     }
@@ -47,18 +49,20 @@ const polling = () => new Promise((resolve, reject) => {
     });
 });
 
-setInterval(() => {
-    polling()
-        .then(proceeded => {
-            if (proceeded) {
+if (document.getElementById('polling')?.dataset?.last_event_id) {
+    setInterval(() => {
+        polling()
+            .then(proceeded => {
+                if (proceeded) {
+                    clearTimeout();
+                    location.reload();
+                }
+            })
+            .catch(() => {
                 clearTimeout();
-                location.reload();
-            }
-        })
-        .catch(() => {
-            clearTimeout();
-        });
-}, 1000);
+            });
+    }, 1000);
+}
 
 const startRound = (event) => {
     const member_id = event.target.dataset.member_id;
@@ -92,6 +96,22 @@ const playCard = () => {
     axios.post(
         '/game/round/play',
         { room_id: room_id, member_id: member_id, cards: cards }
+    ).then(() => {
+        location.reload();
+    }).catch(error => {
+        console.error(error);
+    });
+};
+
+const passTurn = () => {
+    const room_id = document.querySelector('.board').dataset.room_id;
+    const member_id = document.querySelector('.board .play').dataset.member_id;
+
+    loading();
+
+    axios.post(
+        '/game/round/play',
+        { room_id: room_id, member_id: member_id }
     ).then(() => {
         location.reload();
     }).catch(error => {

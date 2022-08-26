@@ -46,7 +46,7 @@ final class Input
                         $cardInput['suit'],
                         intval($cardInput['number']),
                     );
-                }, $input['cards']),
+                }, $input['cards'] ?? []),
         );
     }
 }
