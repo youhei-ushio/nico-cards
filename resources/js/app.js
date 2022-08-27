@@ -54,12 +54,12 @@ if (document.getElementById('polling')?.dataset?.last_event_id) {
         polling()
             .then(proceeded => {
                 if (proceeded) {
-                    clearTimeout();
+                    clearInterval();
                     location.reload();
                 }
             })
             .catch(() => {
-                clearTimeout();
+                clearInterval();
             });
     }, 1000);
 }
