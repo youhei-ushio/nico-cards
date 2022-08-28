@@ -46,7 +46,7 @@ final class Interactor
                 if ($retry >= 1000) {
                     return;
                 }
-                sleep(2);
+                sleep(1);
                 continue;
             }
 
