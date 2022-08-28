@@ -12,12 +12,23 @@
 }
 
 .board .play {
-    margin-top: -215px;
+    margin-top: -245px;
     margin-left: 50px;
 }
 
 .board .play .card:nth-child(n+6) {
-    margin-top: -130px;
+    margin-left: -30px;
+    margin-top: -150px;
+}
+
+.board .play .card:nth-child(n+10) {
+    margin-left: -60px;
+    margin-top: -150px;
+}
+
+.board .upcard .card:nth-child(n+7) {
+    margin-left: -30px;
+    margin-top: -160px;
 }
 
 .my-hand {

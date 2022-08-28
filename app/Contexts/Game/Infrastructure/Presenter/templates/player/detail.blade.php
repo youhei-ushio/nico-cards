@@ -49,7 +49,7 @@ use Illuminate\Support\ViewErrorBag;
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <div class="grid gap-8 space-x-1 lg:grid-cols-8">
-                            <div class="flex flex-col col-span-3 p-6 bg-white rounded-lg border border-gray-400 shadow-md md:flex-row dark:border-gray-700 dark:bg-gray-800 h-56">
+                            <div class="flex flex-col col-span-3 p-6 bg-white rounded-lg border border-gray-400 shadow-md md:flex-row dark:border-gray-700 dark:bg-gray-800 h-48">
                                 @if (!$view->messages->empty())
                                     <ul class="space-y-1 max-w-md list-disc list-inside text-gray-500 dark:text-gray-400">
                                         @foreach($view->messages as $message)
@@ -66,7 +66,7 @@ use Illuminate\Support\ViewErrorBag;
                                     </ul>
                                 @endif
                             </div>
-                            <div class="board p-6 flex-col col-span-4 items-center bg-green-600 rounded-lg border border-gray-400 shadow-md md:flex-row md:max-w-xl dark:border-gray-700 dark:bg-gray-800 h-56 pl-20" data-room_id="{{ $view->room->id }}">
+                            <div class="board p-6 flex-col col-span-4 items-center bg-green-600 rounded-lg border border-gray-400 shadow-md md:flex-row md:max-w-xl dark:border-gray-700 dark:bg-gray-800 h-64 pl-20" data-room_id="{{ $view->room->id }}">
                                 <div class="upcard h-full">
                                     @foreach($view->round->upcard ?? [] as $card)
                                         <img src="{{ $view->getCardImagePath($card) }}" alt="upcard" class="card object-cover h-48 rounded-t-lg md:rounded-none md:rounded-l-lg" data-suit="{{ $card->suit }}" data-number="{{ $card->number }}">
