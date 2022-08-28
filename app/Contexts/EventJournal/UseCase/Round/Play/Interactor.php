@@ -52,5 +52,24 @@ final class Interactor
                 Value\Event\Message\Level::info()->getValue(),
             ));
         }
+
+        if ($round->isFinished()) {
+            foreach ($room->members as $member) {
+                $this->eventMessageRepository->save(new EventMessageSaveRecord(
+                    $journal->id->getValue(),
+                    $member->id->getValue(),
+                    $journal->roomId->getValue(),
+                    __('game.round.finished'),
+                    Value\Event\Message\Level::info()->getValue(),
+                ));
+            }
+            $this->eventMessageRepository->save(new EventMessageSaveRecord(
+                $journal->id->getValue(),
+                Value\Member\Id::everyone()->getValue(),
+                Value\Room\Id::lobby()->getValue(),
+                __('game.round.finished_in', ['room' => $room->name]),
+                Value\Event\Message\Level::info()->getValue(),
+            ));
+        }
     }
 }
