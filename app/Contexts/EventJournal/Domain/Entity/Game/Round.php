@@ -37,7 +37,7 @@ final class Round
         private Upcard|null $upcard,
         private Value\Game\Round\Turn $turn,
         private readonly bool $reversed,
-        private readonly array $players,
+        private array $players,
     )
     {
 
@@ -52,12 +52,12 @@ final class Round
      */
     public function deal(Value\Member\Id $playerId, array $cards): void
     {
-        foreach ($this->players as $index => $player) {
+        array_walk($this->players, function (Player $player) use ($playerId, $cards) {
             if (!$player->id->equals($playerId)) {
-                continue;
+                return;
             }
-            $this->players[$index]->deal($cards);
-        }
+            $player->deal($cards);
+        });
     }
 
     /**
@@ -67,9 +67,9 @@ final class Round
      */
     public function start(): void
     {
-        foreach ($this->players as $player) {
+        array_walk($this->players, function (Player $player) {
             $player->start();
-        }
+        });
     }
 
     /**
