@@ -14,17 +14,20 @@ use Illuminate\Support\ViewErrorBag;
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('game.round.title') }}
-            @if ($view->hasRound())
+            {{ $view->room->name }}
+        </h2>
+        @if ($view->hasRound())
+            @if ($view->round->finished)
+                {{ __('game.round.finished') }}
+            @else
                 {!! __('game.round.turn', ['turn' => $view->round->turn]) !!}
             @endif
-        </h2>
-        {{ $view->room->name }}
+        @endif
     </x-slot>
 
     <div id="polling" data-last_event_id="{{ $view->lastEventId }}"></div>
 
-    @if ($view->hasRound())
+    @if ($view->hasRound() && !$view->round->finished)
         <div class="pt-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -34,8 +37,13 @@ use Illuminate\Support\ViewErrorBag;
                                 <div class="flex flex-col items-center {{ $opponent->onTurn ? 'bg-yellow-200' : 'bg-white' }} rounded-lg border border-gray-400 shadow-md md:flex-row md:max-w-xl dark:border-gray-700 dark:bg-gray-800">
                                     <img src="{{ $view->getPlayerImagePath($opponent->id) }}" alt="player" class="object-cover h-20 rounded-t-lg md:rounded-none md:rounded-l-lg">
                                     <h4 class="text-2xl">{{ $opponent->name }}</h4>
-                                    <img src="{{ asset('images/card_back.png') }}" alt="card" class="object-cover h-16 rounded-t-lg md:rounded-none md:rounded-l-lg ml-12 mr-2">
-                                    {!! __('game.round.number_of_hands', ['count' => $opponent->hand]) !!}
+                                    @if ($opponent->finished)
+                                        <img src="{{ $view->getRankImagePath($opponent->rank) }}" alt="rank" class="h-8 ml-12 mr-2">
+                                        {!! __('game.round.rank', ['rank' => $opponent->rank]) !!}
+                                    @else
+                                        <img src="{{ asset('images/card_back.png') }}" alt="card" class="object-cover h-16 rounded-t-lg md:rounded-none md:rounded-l-lg ml-12 mr-2">
+                                        {!! __('game.round.number_of_hands', ['count' => $opponent->hand]) !!}
+                                    @endif
                                 </div>
                             @endforeach
                         </div>
@@ -93,8 +101,15 @@ use Illuminate\Support\ViewErrorBag;
                                 @endforeach
                             </div>
                         </div>
-                        <div class="flex flex-col col-span-2 p-6 items-center justify-center rounded-lg border border-gray-400 shadow-md dark:border-gray-700 dark:bg-gray-800 {{ $view->round->player->onTurn ? 'bg-yellow-200' : 'bg-white' }}">
-                            <img src="{{ $view->getPlayerImagePath($view->member->id) }}" alt="player" class="object-cover h-20 rounded-t-lg md:rounded-none md:rounded-l-lg">
+                        <div class="col-span-2 pt-6 pb-6 text-center rounded-lg border border-gray-400 shadow-md dark:border-gray-700 dark:bg-gray-800 {{ $view->round->player->onTurn ? 'bg-yellow-200' : 'bg-white' }}">
+                            <img src="{{ $view->getPlayerImagePath($view->member->id) }}" alt="player" class="inline object-cover h-20 rounded-t-lg md:rounded-none md:rounded-l-lg">
+                            @if ($view->round->player->finished)
+                                <img src="{{ $view->getRankImagePath($view->round->player->rank) }}" alt="rank" class="inline h-8 mr-2">
+                                {!! __('game.round.rank', ['rank' => $view->round->player->rank]) !!}
+                            @else
+                                <img src="{{ asset('images/card_back.png') }}" alt="card" class="inline object-cover h-16 rounded-t-lg md:rounded-none md:rounded-l-lg mr-2">
+                                {!! __('game.round.number_of_hands', ['count' => count($view->round->player->hand)]) !!}
+                            @endif
                             @if ($view->round->player->onTurn)
                                 <button id="play_button" class="text-white w-40 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-3">
                                     {{ __('game.round.play') }}
@@ -115,12 +130,23 @@ use Illuminate\Support\ViewErrorBag;
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200 text-center">
                         <div class="grid gap-8 space-x-1 lg:grid-cols-4">
-                            @foreach ($view->room->members as $member)
-                                <div class="flex flex-col items-center bg-white rounded-lg border border-gray-400 shadow-md md:flex-row md:max-w-xl dark:border-gray-700 dark:bg-gray-800">
-                                    <img src="{{ $view->getPlayerImagePath($member->id) }}" alt="player" class="object-cover h-20 rounded-t-lg md:rounded-none md:rounded-l-lg">
-                                    <h4 class="text-2xl">{{ $member->name }}</h4>
-                                </div>
-                            @endforeach
+                            @if ($view->hasRound())
+                                @foreach ($view->getRanking() as $rank => $player)
+                                    <div class="flex flex-col items-center bg-white rounded-lg border border-gray-400 shadow-md md:flex-row md:max-w-xl dark:border-gray-700 dark:bg-gray-800">
+                                        <img src="{{ $view->getPlayerImagePath($player->id) }}" alt="player" class="inline object-cover h-20 rounded-t-lg md:rounded-none md:rounded-l-lg">
+                                        <h4 class="inline text-2xl">{{ $player->name }}</h4>
+                                        <img src="{{ $view->getRankImagePath($player->rank) }}" alt="rank" class="inline h-8 ml-2 mr-2">
+                                        {!! __('game.round.rank', ['rank' => $player->rank]) !!}
+                                    </div>
+                                @endforeach
+                            @else
+                                @foreach ($view->room->members as $member)
+                                    <div class="flex flex-col items-center bg-white rounded-lg border border-gray-400 shadow-md md:flex-row md:max-w-xl dark:border-gray-700 dark:bg-gray-800">
+                                        <img src="{{ $view->getPlayerImagePath($member->id) }}" alt="player" class="object-cover h-20 rounded-t-lg md:rounded-none md:rounded-l-lg">
+                                        <h4 class="text-2xl">{{ $member->name }}</h4>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
 
                         <div class="mt-6 ">

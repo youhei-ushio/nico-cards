@@ -9,6 +9,8 @@ use App\Contexts\Core\Domain\Persistence\PlayerRestoreRecord;
 use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\Domain\Exception\CannotPlayTurnException;
 use App\Contexts\EventJournal\Domain\Exception\CardNotFoundException;
+use App\Contexts\EventJournal\Domain\Persistence\CardSaveRecord;
+use App\Contexts\EventJournal\Domain\Persistence\PlayerSaveRecord;
 
 final class Player
 {
@@ -16,11 +18,13 @@ final class Player
      * @param Value\Member\Id $id
      * @param Value\Game\Card[] $hand
      * @param bool $onTurn
+     * @param Value\Game\Round\Rank $rank
      */
     public function __construct(
         public readonly Value\Member\Id $id,
-        public array $hand,
+        private array $hand,
         public bool $onTurn,
+        private Value\Game\Round\Rank $rank,
     )
     {
 
@@ -52,22 +56,57 @@ final class Player
     /**
      * カードを場に出す
      *
-     * @param string $suit
-     * @param int $number
-     * @return Value\Game\Card
+     * @param Value\Game\Card $card
+     * @return void
      */
-    public function play(string $suit, int $number): Value\Game\Card
+    public function play(Value\Game\Card $card): void
     {
         if (!$this->onTurn) {
             throw new CannotPlayTurnException();
         }
-        foreach ($this->hand as $index => $card) {
-            if ($card->suit === $suit && $card->number === $number) {
+        foreach ($this->hand as $index => $handCard) {
+            if ($handCard->equals($card)) {
                 unset($this->hand[$index]);
-                return $card;
+                return;
             }
         }
         throw new CardNotFoundException();
+    }
+
+    /**
+     * @return bool
+     */
+    public function finished(): bool
+    {
+        return empty($this->hand);
+    }
+
+    /**
+     * @param Value\Game\Round\Rank $rank
+     * @return void
+     */
+    public function setRank(Value\Game\Round\Rank $rank): void
+    {
+        $this->rank = $rank;
+    }
+
+    /**
+     * @return PlayerSaveRecord
+     */
+    public function createSaveRecord(): PlayerSaveRecord
+    {
+        return new PlayerSaveRecord(
+            id: $this->id->getValue(),
+            hand: array_map(
+                function (Value\Game\Card $card) {
+                    return new CardSaveRecord(
+                        $card->suit,
+                        $card->number,
+                    );
+                }, $this->hand),
+            onTurn: $this->onTurn,
+            rank: $this->rank->getValue(),
+        );
     }
 
     /**
@@ -98,6 +137,7 @@ final class Player
                     return Value\Game\Card::restore($cardRecord);
                 }, $record->hand),
             onTurn: $record->onTurn,
+            rank: Value\Game\Round\Rank::fromNumber($record->rank),
         );
     }
 
@@ -123,6 +163,7 @@ final class Player
                 id: $member->id,
                 hand: [],
                 onTurn: false,
+                rank: Value\Game\Round\Rank::empty(),
             );
         }, $members);
     }

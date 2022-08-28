@@ -22,6 +22,7 @@ final class Round
      * @param bool $reversed 革命による反転中かどうか
      * @param Player $player プレイヤー（自分）
      * @param Opponent[] $opponents プレイヤー（対戦相手）
+     * @param bool $finished 終了したかどうか
      * @see restore()
      */
     private function __construct(
@@ -30,6 +31,7 @@ final class Round
         public readonly bool $reversed,
         public readonly Player $player,
         public readonly array $opponents,
+        public readonly bool $finished,
     )
     {
 
@@ -64,6 +66,7 @@ final class Round
             reversed: $record->reversed,
             player: $player,
             opponents: $opponents,
+            finished: $record->finished,
         );
     }
 }

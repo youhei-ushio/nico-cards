@@ -25,6 +25,7 @@ trait RoundRecordCreatable
             turn: $row['turn'],
             reversed: $row['reversed'] === 1,
             playerRecords: $players,
+            finished: $row['finished'] === 1,
         );
     }
 }

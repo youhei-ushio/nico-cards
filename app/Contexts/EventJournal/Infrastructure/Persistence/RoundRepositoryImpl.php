@@ -68,6 +68,7 @@ final class RoundRepositoryImpl implements RoundRepository
                 'room_id' => $record->roomId,
                 'turn' => $record->turn,
                 'reversed' => $record->reversed,
+                'finished' => $record->finished,
             ])
             ->saveOrFail();
 
@@ -84,6 +85,7 @@ final class RoundRepositoryImpl implements RoundRepository
                     'round_id' => $roundRow->id,
                     'user_id' => $player->id,
                     'on_turn' => $player->onTurn,
+                    'rank' => $player->rank,
                 ])->saveOrFail();
 
                 foreach ($player->hand as $card) {

@@ -23,6 +23,7 @@ trait PlayerRecordCreatable
             name: $row['profile']['name'] ?? $row['user']['name'],
             onTurn: $row['on_turn'] === 1,
             hand: $hand,
+            rank: $row['rank'],
         );
     }
 }

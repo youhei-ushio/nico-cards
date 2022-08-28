@@ -14,12 +14,14 @@ final class PlayerRestoreRecord
      * @param string $name
      * @param bool $onTurn
      * @param CardRestoreRecord[] $hand
+     * @param int $rank
      */
     public function __construct(
         public readonly int $id,
         public readonly string $name,
         public readonly bool $onTurn,
         public readonly array $hand,
+        public readonly int $rank,
     )
     {
 

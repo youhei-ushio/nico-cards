@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Contexts\Game\Infrastructure\Presenter;
 
 use App\Contexts\Core\Domain\Value;
+use App\Contexts\Game\Domain\Value\Opponent;
+use App\Contexts\Game\Domain\Value\Player;
 use App\Contexts\Game\Domain\Value\Round;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -70,5 +72,33 @@ final class PlayerDetailView
         }
         $suit = strtolower(Str::singular($card->suit));
         return asset(sprintf('/images/card_%s_%02d.png', $suit, $card->number));
+    }
+
+    /**
+     * @param Value\Game\Round\Rank $rank
+     * @return string
+     */
+    public function getRankImagePath(Value\Game\Round\Rank $rank): string
+    {
+        return match ($rank->getValue()) {
+            1 => asset('/images/mark_oukan_crown1_gold.png'),
+            2 => asset('/images/mark_oukan_crown2_silver.png'),
+            3 => asset('/images/mark_oukan_crown3_bronze.png'),
+            default => asset('/images/mark_oukan_crown3_bronze.png'),
+        };
+    }
+
+    /**
+     * @return Player[]|Opponent[]
+     */
+    public function getRanking(): array
+    {
+        $ranking = [];
+        foreach ($this->round->opponents as $opponent) {
+            $ranking[$opponent->rank->getValue()] = $opponent;
+        }
+        $ranking[$this->round->player->rank->getValue()] = $this->round->player;
+        ksort($ranking);
+        return $ranking;
     }
 }

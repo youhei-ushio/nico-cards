@@ -28,10 +28,10 @@ final class Upcard
 
     /**
      * @param Value\Game\Card[] $cards
-     * @param Value\Game\Rule $rule
+     * @param Value\Game\PlayCardRule $rule
      * @return void
      */
-    public function validate(array $cards, Value\Game\Rule $rule): void
+    public function validate(array $cards, Value\Game\PlayCardRule $rule): void
     {
         if (!$rule->playable($this->cards, $cards)) {
             throw new CannotPlayCardException();

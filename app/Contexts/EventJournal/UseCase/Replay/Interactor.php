@@ -43,7 +43,7 @@ final class Interactor
             $this->journalListRepository->restore($input->roomId);
             if ($this->journalListRepository->empty()) {
                 $retry++;
-                if ($retry >= 10) {
+                if ($retry >= 1000) {
                     return;
                 }
                 sleep(2);

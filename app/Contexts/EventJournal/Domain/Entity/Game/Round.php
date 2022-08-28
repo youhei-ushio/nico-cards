@@ -10,8 +10,6 @@ use App\Contexts\EventJournal\Domain\Exception\CannotPassException;
 use App\Contexts\EventJournal\Domain\Exception\NotEnoughPlayerException;
 use App\Contexts\EventJournal\Domain\Exception\TooManyPlayersException;
 use App\Contexts\EventJournal\Domain\Exception\TurnPlayerNotFoundException;
-use App\Contexts\EventJournal\Domain\Persistence\CardSaveRecord;
-use App\Contexts\EventJournal\Domain\Persistence\PlayerSaveRecord;
 use App\Contexts\EventJournal\Domain\Persistence\RoundRepository;
 use App\Contexts\EventJournal\Domain\Persistence\RoundSaveRecord;
 
@@ -30,6 +28,7 @@ final class Round
      * @param Value\Game\Round\Turn $turn ターン
      * @param bool $reversed 革命による反転中かどうか
      * @param Player[] $players 全てのプレイヤー
+     * @param Value\Game\PlayCardRule $rule ルール
      */
     private function __construct(
         private readonly Value\Game\Round\Id|null $id,
@@ -38,6 +37,8 @@ final class Round
         private Value\Game\Round\Turn $turn,
         private readonly bool $reversed,
         private array $players,
+        private readonly Value\Game\PlayCardRule $rule,
+        private bool $finished,
     )
     {
 
@@ -81,22 +82,33 @@ final class Round
      */
     public function play(Value\Member\Id $playerId, array $cards): Upcard
     {
-        $playCards = [];
-        foreach ($this->players as $player) {
+        $combination = new Value\Game\Combination($cards);
+        $combination->validate($this->rule);
+
+        array_walk($this->players, function (Player $player) use ($playerId, $cards) {
             if (!$player->id->equals($playerId)) {
-                continue;
+                return;
             }
             foreach ($cards as $card) {
-                $playCards[] = $player->play($card->suit, $card->number);
+                $player->play($card);
             }
-        }
+            if ($player->finished()) {
+                $player->setRank($this->getNextRank());
+            }
+        });
 
         if ($this->upcard === null) {
-            $this->upcard = Upcard::create($playerId, $playCards);
+            $this->upcard = Upcard::create($playerId, $cards);
         } else {
-            $this->upcard->validate($playCards, new Value\Game\Rule($this->reversed));
-            $this->upcard->play($playerId, $playCards);
+            $this->upcard->validate($cards, $this->rule);
+            $this->upcard->play($playerId, $cards);
         }
+
+        if ($this->countPlayers() <= 1) {
+            $this->setLowestRank();
+            $this->finished = true;
+        }
+
         $this->turn = $this->turn->next();
         $this->setNextTurnPlayer();
         return $this->upcard;
@@ -114,11 +126,6 @@ final class Round
         }
         $this->turn = $this->turn->next();
         $nextPlayer = $this->setNextTurnPlayer();
-
-        // 場札が次ターンのプレイヤーが出したものなら場札を流す
-        if ($this->upcard->playerId->equals($nextPlayer->id)) {
-            $this->upcard = null;
-        }
     }
 
     /**
@@ -132,20 +139,10 @@ final class Round
             $this->roomId->getValue(),
             turn: $this->turn->getValue(),
             reversed: $this->reversed,
-            finished: false,
+            finished: $this->finished,
             players: array_map(
                 function (Player $player) {
-                    return new PlayerSaveRecord(
-                        $player->id->getValue(),
-                        array_map(
-                            function (Value\Game\Card $card) {
-                                return new CardSaveRecord(
-                                    $card->suit,
-                                    $card->number,
-                                );
-                            }, $player->hand),
-                        $player->onTurn,
-                    );
+                    return $player->createSaveRecord();
                 }, $this->players),
             upcard: $this->upcard?->createSaveRecord(),
         ));
@@ -172,6 +169,8 @@ final class Round
             turn: Value\Game\Round\Turn::first(),
             reversed: false,
             players: $players,
+            rule: new Value\Game\PlayCardRule(false),
+            finished: false,
         );
     }
 
@@ -188,6 +187,8 @@ final class Round
             turn: Value\Game\Round\Turn::fromNumber($record->turn),
             reversed: $record->reversed,
             players: Player::restoreList($record->playerRecords),
+            rule: new Value\Game\PlayCardRule($record->reversed),
+            finished: $record->finished,
         );
     }
 
@@ -198,19 +199,96 @@ final class Round
      */
     private function setNextTurnPlayer(): Player
     {
+        $currentTurnIndex = -1;
         foreach ($this->players as $index => $player) {
-            if (!$player->onTurn) {
-                continue;
-            }
-            $this->players[$index]->onTurn = false;
-            if (isset($this->players[$index + 1])) {
-                $this->players[$index + 1]->onTurn = true;
-                return $this->players[$index + 1];
-            } else {
-                $this->players[0]->onTurn = true;
-                return $this->players[0];
+            if ($player->onTurn) {
+                $currentTurnIndex = $index;
+               break;
             }
         }
-        throw new TurnPlayerNotFoundException();
+        if ($currentTurnIndex < 0) {
+            throw new TurnPlayerNotFoundException();
+        }
+
+        $nextTurnIndex = $this->getNextTurnPlayerIndex($currentTurnIndex);
+        $finishedCount = 0;
+        while (true) {
+            // 場札が次ターンのプレイヤーが出したものなら場札を流す
+            if ($this->upcard?->playerId?->equals($this->players[$nextTurnIndex]->id)) {
+                $this->upcard = null;
+            }
+            if ($this->players[$nextTurnIndex]->finished()) {
+                $nextTurnIndex = $this->getNextTurnPlayerIndex($nextTurnIndex);
+                $finishedCount++;
+                if ($finishedCount >= count($this->players)) {
+                    throw new TurnPlayerNotFoundException();
+                }
+                continue;
+            }
+            $this->players[$nextTurnIndex]->onTurn = true;
+            $this->players[$currentTurnIndex]->onTurn = false;
+            return $this->players[$nextTurnIndex];
+        }
+    }
+
+    /**
+     * 次ターンのプレイヤーの要素indexを取得する
+     *
+     * @param int $currentTurnIndex
+     * @return int
+     * @note 順番はプレイヤーの入室順に回す
+     */
+    private function getNextTurnPlayerIndex(int $currentTurnIndex): int
+    {
+        if (isset($this->players[$currentTurnIndex + 1])) {
+            return $currentTurnIndex + 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * @return Value\Game\Round\Rank
+     */
+    private function getNextRank(): Value\Game\Round\Rank
+    {
+        $finishedCount = 0;
+        foreach ($this->players as $player) {
+            if ($player->finished()) {
+                $finishedCount++;
+            }
+        }
+        return Value\Game\Round\Rank::fromNumber($finishedCount);
+    }
+
+    /**
+     * @return int
+     */
+    private function countPlayers(): int
+    {
+        $count = 0;
+        foreach ($this->players as $player) {
+            if ($player->finished()) {
+                continue;
+            }
+            $count++;
+        }
+        return $count;
+    }
+
+    /**
+     * 最下位の設定
+     *
+     * @return void
+     */
+    private function setLowestRank(): void
+    {
+        $rank = count($this->players);
+        array_walk($this->players, function (Player $player) use ($rank) {
+            if ($player->finished()) {
+                return;
+            }
+            $player->setRank(Value\Game\Round\Rank::fromNumber($rank));
+        });
     }
 }

@@ -8,6 +8,9 @@ use App\Contexts\Core\Domain\Persistence\CardRestoreRecord;
 use JsonSerializable;
 use Seasalt\Nicoca\Components\Domain\ValueObject\InvalidValueException;
 
+/**
+ * カード
+ */
 final class Card implements JsonSerializable
 {
     /** @var string */
@@ -90,6 +93,39 @@ final class Card implements JsonSerializable
     public function isStartCard(): bool
     {
         return $this->suit === self::SUIT_DIAMONDS && $this->number === 3;
+    }
+
+    /**
+     * 同一のカードかどうか
+     *
+     * @param Card $card
+     * @return bool
+     */
+    public function equals(self $card): bool
+    {
+        return $this->suit === $card->suit && $this->number === $card->number;
+    }
+
+    /**
+     * シンボルが同じかどうか
+     *
+     * @param Card $card
+     * @return bool
+     */
+    public function sameSuitAs(self $card): bool
+    {
+        return $this->suit === $card->suit;
+    }
+
+    /**
+     * 番号が同じかどうか
+     *
+     * @param Card $card
+     * @return bool
+     */
+    public function sameNumberAs(self $card): bool
+    {
+        return $this->number === $card->number;
     }
 
     /**

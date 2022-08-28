@@ -16,6 +16,7 @@ final class RoundRestoreRecord
      * @param int $turn
      * @param bool $reversed
      * @param PlayerRestoreRecord[] $playerRecords
+     * @param bool $finished
      */
     public function __construct(
         public readonly int $id,
@@ -24,6 +25,7 @@ final class RoundRestoreRecord
         public readonly int $turn,
         public readonly bool $reversed,
         public readonly array $playerRecords,
+        public readonly bool $finished,
     )
     {
 

@@ -2,9 +2,10 @@
 
 return [
     'round' => [
-        'title' => 'ゲーム中',
         'number_of_hands' => '残り <span class="text-2xl font-bold">:count</span> 枚',
-        'turn' => '<span class="text-4xl font-bold">:turn</span> ターン目',
+        'turn' => '<span class="text-2xl font-bold">:turn</span> ターン目',
+        'rank' => '<span class="text-2xl font-bold">:rank</span> 位',
+        'finished' => '対戦が終了しました。',
         'play' => 'カードを出す',
         'pass' => 'パスする',
         'start' => 'ゲーム開始',

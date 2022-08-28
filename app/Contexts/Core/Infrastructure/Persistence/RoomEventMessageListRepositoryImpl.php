@@ -21,10 +21,10 @@ final class RoomEventMessageListRepositoryImpl implements RoomEventMessageListRe
         $this->rows = Models\EventMessage::query()
             ->where('user_id', $memberId->getValue())
             ->where('room_id', $roomId->getValue())
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->limit(5)
             ->get()
-            ->sortBy('created_at')
+            ->sortBy('id')
             ->toArray();
     }
 

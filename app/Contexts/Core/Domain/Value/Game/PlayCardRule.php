@@ -6,7 +6,10 @@ namespace App\Contexts\Core\Domain\Value\Game;
 
 use App\Contexts\Core\Domain\Value;
 
-final class Rule
+/**
+ * 場にカードを出す際のルール
+ */
+final class PlayCardRule
 {
     /**
      * @param bool $reversed
