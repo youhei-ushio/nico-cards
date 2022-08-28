@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contexts\EventJournal\UseCase\Replay;
 
+use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\Domain\Entity\Journal;
 use App\Contexts\EventJournal\Domain\Exception\UnknownEventException;
 use App\Contexts\EventJournal\Domain\Persistence\JournalListRepository;
@@ -17,6 +18,7 @@ use App\Contexts\EventJournal\UseCase\Round\Start\Interactor as RoundStartIntera
 use App\Contexts\EventJournal\UseCase\Round\Play\Interactor as RoundPlayInteractor;
 use App\Contexts\EventJournal\UseCase\Round\Pass\Interactor as RoundPassInteractor;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Throwable;
 
 final class Interactor
@@ -40,10 +42,10 @@ final class Interactor
     {
         $retry = 0;
         while (true) {
-            $this->journalListRepository->restore($input->roomId);
+            $this->journalListRepository->restore(Value\Room\Id::fromNumber($input->roomId));
             if ($this->journalListRepository->empty()) {
                 $retry++;
-                if ($retry >= 1000) {
+                if ($retry >= $input->retry) {
                     return;
                 }
                 sleep(1);
@@ -80,9 +82,11 @@ final class Interactor
             $this->snapshotRepository->save(
                 new SnapshotSaveRecord(
                     $lastId->getValue(),
-                    $input->roomId->getValue(),
+                    $input->roomId,
                 )
             );
+
+            Redis::set('event' . $lastId->getValue(), 'done');
         }
     }
 }

@@ -9,7 +9,8 @@ use App\Contexts\Core\Domain\Value;
 final class Input
 {
     public function __construct(
-        public readonly Value\Room\Id $roomId,
+        public readonly int $roomId,
+        public readonly int $retry,
     )
     {
 

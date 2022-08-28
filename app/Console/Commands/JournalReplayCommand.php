@@ -31,7 +31,10 @@ final class JournalReplayCommand extends Command
      */
     public function handle(Interactor $interactor): int
     {
-        $input = new Input(Value\Room\Id::fromNumber(1)); // TODO
+        $input = new Input(
+            roomId: 1, // TODO いったんroom1固定
+            retry: 1000,
+        );
         $interactor->execute($input);
         return 0;
     }

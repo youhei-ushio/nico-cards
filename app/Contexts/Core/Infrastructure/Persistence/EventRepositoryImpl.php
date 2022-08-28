@@ -8,6 +8,7 @@ use App\Contexts\Core\Domain\Value;
 use App\Contexts\Core\Domain\Persistence\EventRepository;
 use App\Contexts\Core\Domain\Persistence\EventSaveRecord;
 use App\Models;
+use Illuminate\Support\Facades\Redis;
 use Throwable;
 
 final class EventRepositoryImpl implements EventRepository
@@ -22,13 +23,15 @@ final class EventRepositoryImpl implements EventRepository
     {
         $row = new Models\Journal();
         $row->fill([
-            'type' => $record->type,
-            'user_id' => $record->memberId?->getValue(),
-            'room_id' => $record->roomId?->getValue(),
+            'type' => $record->type->getValue(),
+            'user_id' => $record->memberId->getValue(),
+            'room_id' => $record->roomId->getValue(),
             'payload' => $record->payload !== null ? json_encode($record->payload) : null,
         ])
         ->saveOrFail();
         $this->lastEventId = $row->id;
+
+        Redis::publish('room' . $record->roomId, $row->id);
     }
 
     /**
@@ -72,8 +75,6 @@ final class EventRepositoryImpl implements EventRepository
         if ($eventId === null) {
             return false;
         }
-        return Models\Snapshot::query()
-            ->where('journal_id', '>', $eventId->getValue())
-            ->exists();
+        return Redis::exists('event' . $eventId) !== 0;
     }
 }
