@@ -14,6 +14,22 @@ final class Id
 {
     use IntegerValue;
 
+    /** @var int ロビーを表す部屋ID */
+    private const LOBBY_ID = 0;
+
+    public function isLobby(): bool
+    {
+        return $this->value === self::LOBBY_ID;
+    }
+
+    /**
+     * @return self
+     */
+    public static function lobby(): self
+    {
+        return self::fromNumber(self::LOBBY_ID);
+    }
+
     /**
      * 数値からオブジェクトを生成する
      *

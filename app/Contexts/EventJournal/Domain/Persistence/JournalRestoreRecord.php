@@ -6,6 +6,10 @@ namespace App\Contexts\EventJournal\Domain\Persistence;
 
 use App\Contexts\Core\Domain\Persistence\CardRestoreRecord;
 
+/**
+ * リポジトリで利用するDTO
+ * @see JournalListRepository::restore()
+ */
 final class JournalRestoreRecord
 {
     /**

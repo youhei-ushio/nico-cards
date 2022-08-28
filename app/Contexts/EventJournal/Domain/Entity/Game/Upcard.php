@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Contexts\EventJournal\Domain\Entity\Game;
 
 use App\Contexts\Core\Domain\Persistence\CardRestoreRecord;
-use App\Contexts\Core\Domain\Persistence\CardSaveRecord;
 use App\Contexts\Core\Domain\Persistence\UpcardRestoreRecord;
 use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\Domain\Exception\CannotPlayCardException;
+use App\Contexts\EventJournal\Domain\Persistence\CardSaveRecord;
 use App\Contexts\EventJournal\Domain\Persistence\UpcardSaveRecord;
 
 final class Upcard

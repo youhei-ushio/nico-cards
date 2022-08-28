@@ -8,6 +8,10 @@ use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\Domain\Entity\Game\Player;
 use App\Contexts\EventJournal\Domain\Entity\Game\Round;
 use App\Contexts\EventJournal\Domain\Entity\Journal;
+use App\Contexts\EventJournal\Domain\Exception\NotEnoughPlayerException;
+use App\Contexts\EventJournal\Domain\Exception\TooManyPlayersException;
+use App\Contexts\EventJournal\Domain\Persistence\EventMessageRepository;
+use App\Contexts\EventJournal\Domain\Persistence\EventMessageSaveRecord;
 use App\Contexts\EventJournal\Domain\Persistence\RoomRepository;
 use App\Contexts\EventJournal\Domain\Persistence\RoundRepository;
 
@@ -16,6 +20,7 @@ final class Interactor
     public function __construct(
         private readonly RoundRepository $roundRepository,
         private readonly RoomRepository $roomRepository,
+        private readonly EventMessageRepository $eventMessageRepository,
     )
     {
 
@@ -31,7 +36,25 @@ final class Interactor
 
         $room = Value\Room::restore($this->roomRepository->restore($journal->roomId));
         $players = Player::createList($room->members);
-        $round = Round::create($room, $players);
-        $round->save($this->roundRepository);
+        try {
+            $round = Round::create($room, $players);
+            $round->save($this->roundRepository);
+        } catch (NotEnoughPlayerException) {
+            $this->eventMessageRepository->save(new EventMessageSaveRecord(
+                $journal->id->getValue(),
+                $journal->memberId->getValue(),
+                $journal->roomId->getValue(),
+                __('game.round.not_enough_player'),
+                Value\Event\Message\Level::error()->getValue(),
+            ));
+        } catch (TooManyPlayersException) {
+            $this->eventMessageRepository->save(new EventMessageSaveRecord(
+                $journal->id->getValue(),
+                $journal->memberId->getValue(),
+                $journal->roomId->getValue(),
+                __('game.round.too_many_players'),
+                Value\Event\Message\Level::error()->getValue(),
+            ));
+        }
     }
 }

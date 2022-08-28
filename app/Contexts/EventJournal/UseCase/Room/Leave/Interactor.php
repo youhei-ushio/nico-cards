@@ -32,6 +32,7 @@ final class Interactor
             $this->eventMessageRepository->save(new EventMessageSaveRecord(
                 $journal->id->getValue(),
                 $journal->memberId->getValue(),
+                $journal->roomId->getValue(),
                 __('lobby.room.cannot_leave_round'),
                 Value\Event\Message\Level::error()->getValue(),
             ));
@@ -48,6 +49,7 @@ final class Interactor
                 $this->eventMessageRepository->save(new EventMessageSaveRecord(
                     $journal->id->getValue(),
                     $journal->memberId->getValue(),
+                    $journal->roomId->getValue(),
                     __('lobby.room.left_self', ['room' => $room->name]),
                     Value\Event\Message\Level::info()->getValue(),
                 ));
@@ -55,6 +57,7 @@ final class Interactor
                 $this->eventMessageRepository->save(new EventMessageSaveRecord(
                     $journal->id->getValue(),
                     $member->id->getValue(),
+                    $journal->roomId->getValue(),
                     __('lobby.room.left', ['name' => $self->name]),
                     Value\Event\Message\Level::info()->getValue(),
                 ));

@@ -14,6 +14,7 @@ return new class() extends Migration
             $table->id();
             $table->unsignedBigInteger('journal_id')->comment('イベントジャーナルID');
             $table->unsignedBigInteger('user_id')->comment('メンバーID');
+            $table->unsignedBigInteger('room_id')->comment('部屋ID');
             $table->string('body', 200)->comment('本文');
             $table->string('level', 20)->comment('レベル(info,warning,error)');
             $table->timestamps();

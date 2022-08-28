@@ -9,7 +9,7 @@ use App\Contexts\Core\Domain\Persistence\RoomRestoreRecord;
 /**
  * リポジトリで利用するDTO
  *
- * @see RoomMemberRepository::restore
+ * @see RoomMemberRepository::restore()
  */
 final class RoomMemberRestoreRecord
 {

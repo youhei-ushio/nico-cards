@@ -34,9 +34,17 @@ final class Interactor
             $this->eventMessageRepository->save(new EventMessageSaveRecord(
                 $journal->id->getValue(),
                 $member->id->getValue(),
+                $journal->roomId->getValue(),
                 __('game.round.started'),
                 Value\Event\Message\Level::info()->getValue(),
             ));
         }
+        $this->eventMessageRepository->save(new EventMessageSaveRecord(
+            $journal->id->getValue(),
+            Value\Member\Id::everyone()->getValue(),
+            Value\Room\Id::lobby()->getValue(),
+            __('game.round.started_in', ['room' => $room->name]),
+            Value\Event\Message\Level::info()->getValue(),
+        ));
     }
 }

@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Contexts\Lobby\Infrastructure\Http\Controller\Room;
 
-use App\Contexts\Lobby\Domain\Event\Entered;
 use App\Contexts\Lobby\Infrastructure\Http\Request\Room\EnterRequest;
-use App\Contexts\Core\Domain\Persistence\EventRepository;
-use App\Contexts\Core\Domain\Value;
+use App\Contexts\Lobby\UseCase\Room\Enter\Input;
+use App\Contexts\Lobby\UseCase\Room\Enter\Interactor;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -23,22 +22,17 @@ final class EnterController extends Controller
 {
     /**
      * @param EnterRequest $request
-     * @param EventRepository $repository
+     * @param Interactor $interactor
      * @return Application|RedirectResponse|Redirector
      */
     #[Get('/lobby/rooms/{id}/enter', 'lobby.rooms.enter')]
     public function __invoke(
         EnterRequest $request,
-        EventRepository $repository,
+        Interactor $interactor,
     ): Redirector|RedirectResponse|Application
     {
         $input = $request->validated();
-        $event = new Entered(
-            Value\Member\Id::fromNumber($input['member_id']),
-            Value\Room\Id::fromString($input['room_id']),
-        );
-        $event->save($repository);
-        $repository->waitForLastEvent();
-        return redirect(route('game.round.detail'));
+        $interactor->execute(Input::fromArray($input));
+        return redirect(route('game.round.detail') . '?member_id=' . $input['member_id']);
     }
 }

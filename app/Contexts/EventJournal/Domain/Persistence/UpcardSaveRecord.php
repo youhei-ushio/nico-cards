@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Contexts\EventJournal\Domain\Persistence;
 
-use App\Contexts\Core\Domain\Persistence\CardSaveRecord;
-
 /**
  * リポジトリで利用するDTO
+ *
+ * @see RoundSaveRecord
  */
 final class UpcardSaveRecord
 {

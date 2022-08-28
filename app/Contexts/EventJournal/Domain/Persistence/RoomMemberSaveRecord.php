@@ -7,7 +7,7 @@ namespace App\Contexts\EventJournal\Domain\Persistence;
 /**
  * リポジトリで利用するDTO
  *
- * @see RoomMemberRepository::save
+ * @see RoomMemberRepository::save()
  */
 final class RoomMemberSaveRecord
 {

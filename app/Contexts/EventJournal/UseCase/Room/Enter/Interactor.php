@@ -11,7 +11,6 @@ use App\Contexts\EventJournal\Domain\Persistence\EventMessageRepository;
 use App\Contexts\EventJournal\Domain\Persistence\EventMessageSaveRecord;
 use App\Contexts\EventJournal\Domain\Persistence\RoomMemberRepository;
 use App\Contexts\EventJournal\Domain\Persistence\RoomRepository;
-use App\Contexts\EventJournal\Domain\Persistence\RoundRepository;
 
 final class Interactor
 {
@@ -31,6 +30,7 @@ final class Interactor
             $this->eventMessageRepository->save(new EventMessageSaveRecord(
                 $journal->id->getValue(),
                 $journal->memberId->getValue(),
+                $journal->roomId->getValue(),
                 __('lobby.room.room_is_full', ['name' => $room->name]),
                 Value\Event\Message\Level::error()->getValue(),
             ));
@@ -46,6 +46,7 @@ final class Interactor
             $this->eventMessageRepository->save(new EventMessageSaveRecord(
                 $journal->id->getValue(),
                 $journal->memberId->getValue(),
+                $journal->roomId->getValue(),
                 __('lobby.room.leave_first'),
                 Value\Event\Message\Level::error()->getValue(),
             ));
@@ -60,6 +61,7 @@ final class Interactor
                 $this->eventMessageRepository->save(new EventMessageSaveRecord(
                     $journal->id->getValue(),
                     $journal->memberId->getValue(),
+                    $journal->roomId->getValue(),
                     __('lobby.room.entered_self', ['room' => $room->name]),
                     Value\Event\Message\Level::info()->getValue(),
                 ));
@@ -67,6 +69,7 @@ final class Interactor
                 $this->eventMessageRepository->save(new EventMessageSaveRecord(
                     $journal->id->getValue(),
                     $member->id->getValue(),
+                    $journal->roomId->getValue(),
                     __('lobby.room.entered', ['name' => $self->name]),
                     Value\Event\Message\Level::info()->getValue(),
                 ));

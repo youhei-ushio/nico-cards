@@ -34,6 +34,7 @@ final class Interactor
             $this->eventMessageRepository->save(new EventMessageSaveRecord(
                 $journal->id->getValue(),
                 $journal->memberId->getValue(),
+                $journal->roomId->getValue(),
                 __('game.round.cannot_play_card'),
                 Value\Event\Message\Level::error()->getValue(),
             ));
@@ -46,6 +47,7 @@ final class Interactor
             $this->eventMessageRepository->save(new EventMessageSaveRecord(
                 $journal->id->getValue(),
                 $member->id->getValue(),
+                $journal->roomId->getValue(),
                 __('game.round.played', ['name' => $journal->memberName->getValue(), 'card' => $upcard->toString()]),
                 Value\Event\Message\Level::info()->getValue(),
             ));

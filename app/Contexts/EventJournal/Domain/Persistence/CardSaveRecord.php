@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Contexts\Core\Domain\Persistence;
+namespace App\Contexts\EventJournal\Domain\Persistence;
 
 /**
  * リポジトリで利用するDTO
+ *
+ * @see PlayerSaveRecord
  */
 final class CardSaveRecord
 {

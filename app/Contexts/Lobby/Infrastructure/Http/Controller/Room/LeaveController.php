@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Contexts\Lobby\Infrastructure\Http\Controller\Room;
 
-use App\Contexts\Lobby\Domain\Event\Left;
 use App\Contexts\Lobby\Infrastructure\Http\Request\Room\LeaveRequest;
-use App\Contexts\Core\Domain\Persistence\EventRepository;
-use App\Contexts\Core\Domain\Value;
+use App\Contexts\Lobby\UseCase\Room\Leave\Input;
+use App\Contexts\Lobby\UseCase\Room\Leave\Interactor;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -23,22 +22,17 @@ final class LeaveController extends Controller
 {
     /**
      * @param LeaveRequest $request
-     * @param EventRepository $repository
+     * @param Interactor $interactor
      * @return Application|RedirectResponse|Redirector
      */
     #[Get('/lobby/rooms/{id}/leave', 'lobby.rooms.leave')]
     public function __invoke(
         LeaveRequest $request,
-        EventRepository $repository,
+        Interactor $interactor,
     ): Redirector|RedirectResponse|Application
     {
         $input = $request->validated();
-        $event = new Left(
-            Value\Member\Id::fromNumber($input['member_id']),
-            Value\Room\Id::fromString($input['room_id']),
-        );
-        $event->save($repository);
-        $repository->waitForLastEvent();
-        return redirect(route('dashboard'));
+        $interactor->execute(Input::fromArray($input));
+        return redirect(route('dashboard') . '?member_id=' . $input['member_id']);
     }
 }

@@ -14,6 +14,19 @@ final class Id
 {
     use IntegerValue;
 
+    /** @var int 対象なし */
+    private const EVERYONE = 0;
+
+    public function isEveryone(): bool
+    {
+        return $this->value === self::EVERYONE;
+    }
+
+    public static function everyone(): self
+    {
+        return self::fromNumber(self::EVERYONE);
+    }
+
     /**
      * 数値からオブジェクトを生成する
      *

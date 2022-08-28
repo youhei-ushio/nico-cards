@@ -21,6 +21,7 @@ final class EventMessageRepositoryImpl implements EventMessageRepository
             ->fill([
                 'journal_id' => $record->journalId,
                 'user_id' => $record->memberId,
+                'room_id' => $record->roomId,
                 'body' => $record->body,
                 'level' => $record->level,
             ])

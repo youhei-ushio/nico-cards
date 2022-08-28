@@ -24,7 +24,7 @@ document.addEventListener('click', event => {
     } else if (event.target.id === 'pass_button') {
         passTurn();
     } else if (event.target.id === 'leave_button') {
-        leaveRoom(event);
+        loading();
     }
 });
 
@@ -112,20 +112,6 @@ const passTurn = () => {
     axios.post(
         '/game/round/play',
         { room_id: room_id, member_id: member_id }
-    ).then(() => {
-        location.reload();
-    }).catch(error => {
-        console.error(error);
-    });
-};
-
-const leaveRoom = (event) => {
-    const member_id = event.target.dataset.member_id;
-
-    loading();
-
-    axios.get(
-        `/lobby/rooms/${member_id}/leave`
     ).then(() => {
         location.reload();
     }).catch(error => {

@@ -4,17 +4,25 @@ declare(strict_types=1);
 
 namespace App\Contexts\EventJournal\Domain\Entity\Game;
 
-use App\Contexts\Core\Domain\Persistence\CardSaveRecord;
-use App\Contexts\Core\Domain\Persistence\PlayerSaveRecord;
 use App\Contexts\Core\Domain\Persistence\RoundRestoreRecord;
 use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\Domain\Exception\CannotPassException;
+use App\Contexts\EventJournal\Domain\Exception\NotEnoughPlayerException;
+use App\Contexts\EventJournal\Domain\Exception\TooManyPlayersException;
 use App\Contexts\EventJournal\Domain\Exception\TurnPlayerNotFoundException;
+use App\Contexts\EventJournal\Domain\Persistence\CardSaveRecord;
+use App\Contexts\EventJournal\Domain\Persistence\PlayerSaveRecord;
 use App\Contexts\EventJournal\Domain\Persistence\RoundRepository;
 use App\Contexts\EventJournal\Domain\Persistence\RoundSaveRecord;
 
 final class Round
 {
+    /** @var int 最小人数 */
+    private const MIN_PLAYERS = 3;
+
+    /** @var int 最大人数 */
+    private const MAX_PLAYERS = 5;
+
     /**
      * @param Value\Game\Round\Id|null $id ラウンドID
      * @param Value\Room\Id $roomId 部屋ID
@@ -28,8 +36,8 @@ final class Round
         private readonly Value\Room\Id $roomId,
         private Upcard|null $upcard,
         private Value\Game\Round\Turn $turn,
-        private bool $reversed,
-        private array $players,
+        private readonly bool $reversed,
+        private readonly array $players,
     )
     {
 
@@ -150,6 +158,13 @@ final class Round
      */
     public static function create(Value\Room $room, array $players): self
     {
+        if (count($players) < self::MIN_PLAYERS) {
+            throw new NotEnoughPlayerException();
+        }
+        if (count($players) > self::MAX_PLAYERS) {
+            throw new TooManyPlayersException();
+        }
+
         return new self(
             id: null,
             roomId: $room->id,
