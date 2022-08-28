@@ -10,6 +10,7 @@ return [
         'pass' => 'パスする',
         'start' => 'ゲーム開始',
         'leave' => '退室',
+        'last_result' => '前回の対戦結果',
         'not_enough_player' => 'プレイヤーが足りません。',
         'too_many_players' => 'プレイヤー多すぎます。',
         'started' => 'ゲームが開始されました。',

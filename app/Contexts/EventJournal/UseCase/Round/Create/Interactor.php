@@ -30,8 +30,13 @@ final class Interactor
     {
         $roundRecord = $this->roundRepository->restore($journal->memberId);
         if ($roundRecord !== null) {
-            // すでに対戦中の場合は何もしない
-            return;
+            $round = Round::restore($roundRecord);
+            if ($round->isFinished()) {
+                $round->destroy($this->roundRepository);
+            } else {
+                // すでに対戦中の場合は何もしない
+                return;
+            }
         }
 
         $room = Value\Room::restore($this->roomRepository->restore($journal->roomId));

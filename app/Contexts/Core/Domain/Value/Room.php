@@ -20,6 +20,9 @@ final class Room
     /** @var int */
     private const USER_LIMIT = 4;
 
+    /** @var int */
+    private const MIN_PLAYERS = 3;
+
     /**
      * newによるインスタンス化はさせない
      *
@@ -35,6 +38,7 @@ final class Room
         public readonly Room\Name $name,
         public readonly array $members,
         public readonly bool $isFull,
+        public readonly bool $isEnoughPlayers,
     )
     {
 
@@ -118,6 +122,7 @@ final class Room
             name: Value\Room\Name::fromString($record->name),
             members: $members,
             isFull: count($members) >= self::USER_LIMIT,
+            isEnoughPlayers: count($members) >= self::MIN_PLAYERS,
         );
     }
 }

@@ -28,7 +28,7 @@ final class Interactor
     public function execute(Journal $journal): void
     {
         $roundRecord = $this->roundRepository->restore($journal->memberId);
-        if ($roundRecord !== null) {
+        if ($roundRecord !== null && !$roundRecord->finished) {
             $this->eventMessageRepository->save(new EventMessageSaveRecord(
                 $journal->id->getValue(),
                 $journal->memberId->getValue(),

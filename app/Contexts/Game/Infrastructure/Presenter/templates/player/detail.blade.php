@@ -125,12 +125,13 @@ use Illuminate\Support\ViewErrorBag;
             </div>
         </div>
     @else
-        <div class="pt-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 bg-white border-b border-gray-200 text-center">
-                        <div class="grid gap-8 space-x-1 lg:grid-cols-4">
-                            @if ($view->hasRound())
+        @if ($view->hasRound())
+            <div class="pt-12">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg text-center">
+                        <h3 class="mt-5 text-2xl">{{ __('game.round.last_result') }}</h3>
+                        <div class="p-6 bg-white border-b border-gray-200 text-center">
+                            <div class="grid gap-8 space-x-1 lg:grid-cols-4">
                                 @foreach ($view->getRanking() as $rank => $player)
                                     <div class="flex flex-col items-center bg-white rounded-lg border border-gray-400 shadow-md md:flex-row md:max-w-xl dark:border-gray-700 dark:bg-gray-800">
                                         <img src="{{ $view->getPlayerImagePath($player->id) }}" alt="player" class="inline object-cover h-20 rounded-t-lg md:rounded-none md:rounded-l-lg">
@@ -139,20 +140,32 @@ use Illuminate\Support\ViewErrorBag;
                                         {!! __('game.round.rank', ['rank' => $player->rank]) !!}
                                     </div>
                                 @endforeach
-                            @else
-                                @foreach ($view->room->members as $member)
-                                    <div class="flex flex-col items-center bg-white rounded-lg border border-gray-400 shadow-md md:flex-row md:max-w-xl dark:border-gray-700 dark:bg-gray-800">
-                                        <img src="{{ $view->getPlayerImagePath($member->id) }}" alt="player" class="object-cover h-20 rounded-t-lg md:rounded-none md:rounded-l-lg">
-                                        <h4 class="text-2xl">{{ $member->name }}</h4>
-                                    </div>
-                                @endforeach
-                            @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        <div class="pt-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 bg-white border-b border-gray-200 text-center">
+                        <div class="grid gap-8 space-x-1 lg:grid-cols-4">
+                            @foreach ($view->room->members as $member)
+                                <div class="flex flex-col items-center bg-white rounded-lg border border-gray-400 shadow-md md:flex-row md:max-w-xl dark:border-gray-700 dark:bg-gray-800">
+                                    <img src="{{ $view->getPlayerImagePath($member->id) }}" alt="player" class="object-cover h-20 rounded-t-lg md:rounded-none md:rounded-l-lg">
+                                    <h4 class="text-2xl">{{ $member->name }}</h4>
+                                </div>
+                            @endforeach
                         </div>
 
                         <div class="mt-6 ">
-                            <button id="start_button" class="mt-6 w-40 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" data-member_id="{{ $view->member->id }}">
-                                {{ __('game.round.start') }}
-                            </button>
+                            @if ($view->room->isEnoughPlayers)
+                                <button id="start_button" class="mt-6 w-40 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" data-member_id="{{ $view->member->id }}">
+                                    {{ __('game.round.start') }}
+                                </button>
+                            @endif
                             <a href="{{ route('lobby.rooms.leave', ['id' => $view->room->id]) }}?member_id={{ $view->member->id }}" id="leave_button" class="w-40 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                                 {{ __('game.round.leave') }}
                             </a>

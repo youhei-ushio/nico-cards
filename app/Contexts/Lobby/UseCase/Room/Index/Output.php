@@ -12,6 +12,7 @@ final class Output
         public readonly Value\RoomCollection $rooms,
         public readonly Value\Member $member,
         public readonly Value\Event\MessageCollection $messages,
+        public readonly Value\Event\Id $lastEventId,
     )
     {
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contexts\Lobby\UseCase\Room\Index;
 
+use App\Contexts\Core\Domain\Persistence\EventRepository;
 use App\Contexts\Core\Domain\Value;
 use App\Contexts\Lobby\Domain\Persistence\LobbyEventMessageListRepository;
 use App\Contexts\Lobby\Domain\Persistence\MemberRepository;
@@ -15,6 +16,7 @@ final class Interactor
         private readonly RoomListRepository $roomListRepository,
         private readonly MemberRepository $memberRepository,
         private readonly LobbyEventMessageListRepository $eventMessageListRepository,
+        private readonly EventRepository $eventRepository,
     )
     {
 
@@ -27,6 +29,11 @@ final class Interactor
         $member = Value\Member::restore($this->memberRepository->restore($input->memberId));
         $this->eventMessageListRepository->restore();
         $messages = Value\Event\Message::restoreList($this->eventMessageListRepository);
-        return new Output($rooms, $member, $messages);
+        return new Output(
+            $rooms,
+            $member,
+            $messages,
+            $this->eventRepository->lastEventId(),
+        );
     }
 }

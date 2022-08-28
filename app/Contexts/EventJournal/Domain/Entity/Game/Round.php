@@ -6,6 +6,7 @@ namespace App\Contexts\EventJournal\Domain\Entity\Game;
 
 use App\Contexts\Core\Domain\Persistence\RoundRestoreRecord;
 use App\Contexts\Core\Domain\Value;
+use App\Contexts\EventJournal\Domain\Exception\CannotDestroyRoundException;
 use App\Contexts\EventJournal\Domain\Exception\CannotPassException;
 use App\Contexts\EventJournal\Domain\Exception\NotEnoughPlayerException;
 use App\Contexts\EventJournal\Domain\Exception\TooManyPlayersException;
@@ -125,7 +126,7 @@ final class Round
             throw new CannotPassException();
         }
         $this->turn = $this->turn->next();
-        $nextPlayer = $this->setNextTurnPlayer();
+        $this->setNextTurnPlayer();
     }
 
     /**
@@ -146,6 +147,26 @@ final class Round
                 }, $this->players),
             upcard: $this->upcard?->createSaveRecord(),
         ));
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFinished(): bool
+    {
+        return $this->finished;
+    }
+
+    /**
+     * @param RoundRepository $repository
+     * @return void
+     */
+    public function destroy(RoundRepository $repository): void
+    {
+        if (!$this->finished) {
+            throw new CannotDestroyRoundException();
+        }
+        $repository->destroy($this->id);
     }
 
     /**
@@ -195,9 +216,9 @@ final class Round
     /**
      * 次ターンのプレイヤーを設定する
      *
-     * @return Player 設定された次ターンのプレイヤー
+     * @return void
      */
-    private function setNextTurnPlayer(): Player
+    private function setNextTurnPlayer(): void
     {
         $currentTurnIndex = -1;
         foreach ($this->players as $index => $player) {
@@ -227,7 +248,7 @@ final class Round
             }
             $this->players[$nextTurnIndex]->onTurn = true;
             $this->players[$currentTurnIndex]->onTurn = false;
-            return $this->players[$nextTurnIndex];
+            return;
         }
     }
 

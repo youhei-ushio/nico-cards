@@ -23,4 +23,10 @@ interface RoundRepository
      * @return void
      */
     public function save(RoundSaveRecord $record): void;
+
+    /**
+     * @param Value\Game\Round\Id $id
+     * @return void
+     */
+    public function destroy(Value\Game\Round\Id $id): void;
 }

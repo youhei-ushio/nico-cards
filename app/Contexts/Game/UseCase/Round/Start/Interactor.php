@@ -29,7 +29,7 @@ final class Interactor
     public function execute(Input $input): void
     {
         $roundRecord = $this->roundRepository->restore($input->memberId);
-        if ($roundRecord !== null) {
+        if ($roundRecord !== null && !$roundRecord->finished) {
             // すでに対戦中の場合は何もしない
             return;
         }

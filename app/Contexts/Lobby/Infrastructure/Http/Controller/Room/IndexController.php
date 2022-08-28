@@ -37,6 +37,7 @@ final class IndexController extends Controller
             rooms: $output->rooms,
             member: $output->member,
             messages: $output->messages,
+            lastEventId: $output->lastEventId,
         );
         return $view->render();
     }

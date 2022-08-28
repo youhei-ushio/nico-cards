@@ -20,7 +20,7 @@ final class Round
      * @param Value\Game\Upcard|null $upcard 場札
      * @param Value\Game\Round\Turn $turn ターン
      * @param bool $reversed 革命による反転中かどうか
-     * @param Player $player プレイヤー（自分）
+     * @param Player|null $player プレイヤー（自分）
      * @param Opponent[] $opponents プレイヤー（対戦相手）
      * @param bool $finished 終了したかどうか
      * @see restore()
@@ -29,7 +29,7 @@ final class Round
         public readonly Value\Game\Upcard|null $upcard,
         public readonly Value\Game\Round\Turn $turn,
         public readonly bool $reversed,
-        public readonly Player $player,
+        public readonly Player|null $player,
         public readonly array $opponents,
         public readonly bool $finished,
     )
@@ -56,9 +56,6 @@ final class Round
             } else {
                 $opponents[] = Opponent::restore($playerRecord);
             }
-        }
-        if ($player === null) {
-            throw new RoundNotFoundException();
         }
         return new self(
             upcard: Value\Game\Upcard::restore($record->upcard),

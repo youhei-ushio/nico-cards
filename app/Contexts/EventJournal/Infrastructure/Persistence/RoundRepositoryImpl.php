@@ -115,4 +115,25 @@ final class RoundRepositoryImpl implements RoundRepository
             }
         });
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function destroy(Value\Game\Round\Id $id): void
+    {
+        DB::transaction(function () use ($id) {
+            Models\Round::query()
+                ->where('id', $id->getValue())
+                ->delete();
+            Models\RoundUpcards::query()
+                ->where('round_id', $id->getValue())
+                ->delete();
+            Models\RoundUser::query()
+                ->where('round_id', $id->getValue())
+                ->delete();
+            Models\RoundUserHand::query()
+                ->where('round_id', $id->getValue())
+                ->delete();
+        });
+    }
 }

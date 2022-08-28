@@ -18,6 +18,8 @@ use Illuminate\Support\ViewErrorBag;
         </h2>
     </x-slot>
 
+    <div id="polling" data-last_event_id="{{ $view->lastEventId }}"></div>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
