@@ -9,8 +9,38 @@ Webで動く大富豪です。
  - 他、ローカルルール全般未対応。
 
 ## 開発向け
+### Sailインストール
+```
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v $(pwd):/var/www/html \
+    -w /var/www/html \
+    laravelsail/php81-composer:latest \
+    composer install --ignore-platform-reqs
+```
+
+### Sail起動
+```
+sail up -d
+```
+
+### viteサーバ起動
+```
+sail npm run dev
+```
+
+### ユーザー登録
+`http://localhost/register` にアクセス
+
 ### イベントリプレイ
 イベントソーシングを採用しているので、これをしないと入退室やゲーム処理が動かない。
+
+### 4人分の画面をタブ表示
+ログインセッションはブラウザ毎なので、以下のようにGETパラメータで切り替える（もちろんローカルのみ有効）
+`http://localhost/dashboard?member_id=1`<br>
+`http://localhost/dashboard?member_id=2`<br>
+`http://localhost/dashboard?member_id=3`<br>
+`http://localhost/dashboard?member_id=4`<br>
 
 ```
 env XDEBUG_SESSION=docker php artisan journal:replay
