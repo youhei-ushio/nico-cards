@@ -35,6 +35,11 @@ sail npm run dev
 ### イベントリプレイ
 イベントソーシングを採用しているので、これをしないと入退室やゲーム処理が動かない。
 ```
+sail artisan journal:replay
+```
+XDebugを使うなら
+```
+sail shell
 env XDEBUG_SESSION=docker php artisan journal:replay
 ```
 
