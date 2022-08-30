@@ -34,6 +34,9 @@ sail npm run dev
 
 ### イベントリプレイ
 イベントソーシングを採用しているので、これをしないと入退室やゲーム処理が動かない。
+```
+env XDEBUG_SESSION=docker php artisan journal:replay
+```
 
 ### 4人分の画面をタブ表示
 ログインセッションはブラウザ毎なので、以下のようにGETパラメータで切り替える（もちろんローカルのみ有効）
@@ -41,10 +44,6 @@ sail npm run dev
 `http://localhost/dashboard?member_id=2`<br>
 `http://localhost/dashboard?member_id=3`<br>
 `http://localhost/dashboard?member_id=4`<br>
-
-```
-env XDEBUG_SESSION=docker php artisan journal:replay
-```
 
 ### イベント処理の流れ
 
