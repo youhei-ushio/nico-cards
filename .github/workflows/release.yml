@@ -1,0 +1,27 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - feature/phase1
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+
+    env:
+      DEPLOYER_REPOSITORY: git@github.com:youhei-ushio/nico-cards.git
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup SSH Key
+        run: mkdir -p ~/.ssh && echo "${{secrets.DEPLOYER_SSH_KEY}}" > ~/.ssh/id_rsa && chmod 0600 ~/.ssh/id_rsa
+      - name: Setup SSH Config
+        run: mkdir -p ~/.ssh && echo "${{secrets.DEPLOYER_SSH_CONFIG}}" > ~/.ssh/config && chmod 0600 ~/.ssh/config
+      - name: Setup SSH known_hosts
+        run: ssh-keyscan -H ${{secrets.DEPLOYER_SSH_HOST}} >> ~/.ssh/known_hosts
+      - name: Setup Deployer
+        run: curl -LO https://deployer.org/deployer.phar && mv deployer.phar ./dep  && chmod +x ./dep
+      - name: Run Deployer
+        run: ./dep deploy
