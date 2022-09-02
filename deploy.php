@@ -53,6 +53,6 @@ before('deploy:symlink', 'npm:run');
 task('npm:run', function (): void {
     run('cd {{release_path}} && chmod 707 public');
     run('cd {{release_path}} && npm install');
-    run('cd {{release_path}} && npm run prod');
+    run('cd {{release_path}} && npm run build');
     run('cd {{release_path}} && chmod 705 public');
 });
