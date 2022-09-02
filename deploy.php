@@ -13,7 +13,7 @@ set('default_stage', 'production');
 set('keep_releases', 3);
 
 // Project repository
-set('repository', 'git@angie.github.com:youhei-ushio/nico-cards.git');
+set('repository', 'git@nico-cards.github.com:youhei-ushio/nico-cards.git');
 
 // [Optional] Allocate tty for git clone. Default value is false.
 set('git_tty', false);
