@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace App\Contexts\Core\Infrastructure\Persistence;
 
-use App\Contexts\Core\Domain\Value;
 use App\Contexts\Core\Domain\Persistence\EventRepository;
 use App\Contexts\Core\Domain\Persistence\EventSaveRecord;
 use App\Models;
-use Illuminate\Support\Facades\Redis;
 use Throwable;
 
 final class EventRepositoryImpl implements EventRepository
 {
-    private int $lastEventId = 0;
-
     /**
      * @inheritDoc
      * @throws Throwable
@@ -29,52 +25,5 @@ final class EventRepositoryImpl implements EventRepository
             'payload' => $record->payload !== null ? json_encode($record->payload) : null,
         ])
         ->saveOrFail();
-        $this->lastEventId = $row->id;
-
-        Redis::publish('room' . $record->roomId, $row->id);
-    }
-
-    /**
-     * @inheritDoc
-     * @throws Throwable
-     */
-    public function waitForLastEvent(): void
-    {
-        if ($this->lastEventId === 0) {
-            return;
-        }
-        while (true) {
-            $exists = Models\Snapshot::query()
-                ->where('journal_id', '>=', $this->lastEventId)
-                ->exists();
-            if ($exists) {
-                break;
-            }
-            sleep(1);
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function lastEventId(): Value\Event\Id|null
-    {
-        $row = Models\Snapshot::query()
-            ->max('journal_id');
-        if ($row === null) {
-            return null;
-        }
-        return Value\Event\Id::fromNumber($row);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function proceeded(Value\Event\Id|null $eventId): bool
-    {
-        if ($eventId === null) {
-            return false;
-        }
-        return Redis::exists('event' . $eventId) !== 0;
     }
 }

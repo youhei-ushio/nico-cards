@@ -16,7 +16,6 @@ final class Interactor
         private readonly RoomListRepository $roomListRepository,
         private readonly MemberRepository $memberRepository,
         private readonly LobbyEventMessageListRepository $eventMessageListRepository,
-        private readonly EventRepository $eventRepository,
     )
     {
 
@@ -33,7 +32,6 @@ final class Interactor
             $rooms,
             $member,
             $messages,
-            $this->eventRepository->lastEventId(),
         );
     }
 }

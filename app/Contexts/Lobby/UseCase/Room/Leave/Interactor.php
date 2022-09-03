@@ -27,6 +27,5 @@ final class Interactor
             roomId: $input->roomId,
         );
         $event->save($this->eventRepository);
-        $this->eventRepository->waitForLastEvent();
     }
 }

@@ -36,6 +36,5 @@ final class Interactor
             );
         }
         $event->save($this->eventRepository);
-        $this->eventRepository->waitForLastEvent();
     }
 }

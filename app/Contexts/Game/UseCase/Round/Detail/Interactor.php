@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Contexts\Game\UseCase\Round\Detail;
 
-use App\Contexts\Core\Domain\Persistence\EventRepository;
 use App\Contexts\Core\Domain\Persistence\RoomEventMessageListRepository;
 use App\Contexts\Core\Domain\Value;
 use App\Contexts\Game\Domain\Persistence\MemberRepository;
@@ -19,7 +18,6 @@ final class Interactor
         private readonly RoomRepository $roomRepository,
         private readonly RoundRepository $roundRepository,
         private readonly RoomEventMessageListRepository $eventMessageListRepository,
-        private readonly EventRepository $eventRepository,
     )
     {
 
@@ -37,7 +35,6 @@ final class Interactor
             room: $room,
             round: $round,
             messages: $messages,
-            lastEventId: $this->eventRepository->lastEventId(),
         );
     }
 }

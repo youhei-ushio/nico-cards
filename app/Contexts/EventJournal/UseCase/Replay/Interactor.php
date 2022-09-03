@@ -18,7 +18,6 @@ use App\Contexts\EventJournal\UseCase\Round\Start\Interactor as RoundStartIntera
 use App\Contexts\EventJournal\UseCase\Round\Play\Interactor as RoundPlayInteractor;
 use App\Contexts\EventJournal\UseCase\Round\Pass\Interactor as RoundPassInteractor;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redis;
 use Throwable;
 
 final class Interactor
@@ -85,8 +84,6 @@ final class Interactor
                     $input->roomId,
                 )
             );
-
-            Redis::set('event' . $lastId->getValue(), 'done');
         }
     }
 }

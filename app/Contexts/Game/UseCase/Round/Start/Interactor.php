@@ -54,6 +54,5 @@ final class Interactor
             memberId: $input->memberId,
         );
         $startEvent->save($this->eventRepository);
-        $this->eventRepository->waitForLastEvent();
     }
 }

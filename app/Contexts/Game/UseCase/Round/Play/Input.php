@@ -11,7 +11,7 @@ final class Input
 {
     /**
      * @param Value\Member\Id $memberId
-     * @param Value\Game\Card[] $card
+     * @param Value\Game\Card[] $cards
      */
     public function __construct(
         public readonly Value\Member\Id $memberId,

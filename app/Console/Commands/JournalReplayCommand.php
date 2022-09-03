@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\UseCase\Replay\Input;
 use App\Contexts\EventJournal\UseCase\Replay\Interactor;
 use Illuminate\Console\Command;

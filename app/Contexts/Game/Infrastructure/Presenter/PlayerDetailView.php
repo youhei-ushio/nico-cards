@@ -20,7 +20,6 @@ final class PlayerDetailView
         public readonly Value\Room $room,
         public readonly Round|null $round,
         public readonly Value\Event\MessageCollection $messages,
-        public readonly Value\Event\Id $lastEventId,
     )
     {
 
