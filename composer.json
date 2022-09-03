@@ -10,8 +10,9 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "seasalt/nicoca": "~2.0",
+        "pusher/pusher-php-server": "^7.0",
         "seasalt/nico-scaffold": "~1.0",
+        "seasalt/nicoca": "~2.0",
         "spatie/laravel-route-attributes": "^1.12"
     },
     "require-dev": {

@@ -174,6 +174,15 @@ use Illuminate\Support\ViewErrorBag;
         </div>
     @endif
 
+    <script>
+        window.addEventListener('load', () => {
+            Echo.private('room{{ $view->room->id }}')
+                .listen('.message.posted', (e) => {
+                    console.log(e.message);
+                });
+        });
+    </script>
+
     <x-slot name="member_name">
         {{ $view->member->name }}
     </x-slot>
