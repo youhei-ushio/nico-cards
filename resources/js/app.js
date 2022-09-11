@@ -47,7 +47,7 @@ const startRound = (event) => {
         '/game/round/start',
         { member_id: member_id }
     ).then(() => {
-        location.reload();
+
     }).catch(error => {
         console.error(error);
     });
@@ -71,7 +71,7 @@ const playCard = () => {
         '/game/round/play',
         { room_id: room_id, member_id: member_id, cards: cards }
     ).then(() => {
-        location.reload();
+
     }).catch(error => {
         console.error(error);
     });
@@ -87,7 +87,7 @@ const passTurn = () => {
         '/game/round/play',
         { room_id: room_id, member_id: member_id }
     ).then(() => {
-        location.reload();
+
     }).catch(error => {
         console.error(error);
     });
