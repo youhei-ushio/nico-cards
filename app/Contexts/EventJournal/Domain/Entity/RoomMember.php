@@ -24,7 +24,7 @@ final class RoomMember
      * @see restore()
      */
     private function __construct(
-        private readonly Value\Member\Id $id,
+        public readonly Value\Member\Id $id,
         public readonly Value\Member\Name $name,
         private Value\Room|null $room,
     )

@@ -7,9 +7,10 @@ namespace App\Contexts\EventJournal\UseCase\Round\Play;
 use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\Domain\Entity\Game\Round;
 use App\Contexts\EventJournal\Domain\Entity\Journal;
+use App\Contexts\EventJournal\Domain\Entity\RoomMember;
+use App\Contexts\EventJournal\Domain\Event;
 use App\Contexts\EventJournal\Domain\Exception\CannotPlayCardException;
-use App\Contexts\EventJournal\Domain\Persistence\EventMessageRepository;
-use App\Contexts\EventJournal\Domain\Persistence\EventMessageSaveRecord;
+use App\Contexts\EventJournal\Domain\Persistence\RoomMemberRepository;
 use App\Contexts\EventJournal\Domain\Persistence\RoomRepository;
 use App\Contexts\EventJournal\Domain\Persistence\RoundRepository;
 
@@ -17,8 +18,11 @@ final class Interactor
 {
     public function __construct(
         private readonly RoundRepository $roundRepository,
-        private readonly EventMessageRepository $eventMessageRepository,
         private readonly RoomRepository $roomRepository,
+        private readonly RoomMemberRepository $roomMemberRepository,
+        private readonly Event\Round\Played $played,
+        private readonly Event\Round\Finished $finished,
+        private readonly Event\Round\PlayingCanceled $playingCanceled,
     )
     {
 
@@ -28,48 +32,19 @@ final class Interactor
     {
         $roundRecord = $this->roundRepository->restore($journal->memberId);
         $round = Round::restore($roundRecord);
+        $room = Value\Room::restore($this->roomRepository->restore($journal->roomId));
+        $member = RoomMember::restore($this->roomMemberRepository->restore($journal->memberId));
         try {
             $upcard = $round->play($journal->memberId, $journal->cards);
         } catch (CannotPlayCardException) {
-            $this->eventMessageRepository->save(new EventMessageSaveRecord(
-                $journal->id->getValue(),
-                $journal->memberId->getValue(),
-                $journal->roomId->getValue(),
-                __('game.round.cannot_play_card'),
-                Value\Event\Message\Level::error()->getValue(),
-            ));
+            $this->playingCanceled->dispatch($room, $member);
             return;
         }
         $round->save($this->roundRepository);
 
-        $room = Value\Room::restore($this->roomRepository->restore($journal->roomId));
-        foreach ($room->members as $member) {
-            $this->eventMessageRepository->save(new EventMessageSaveRecord(
-                $journal->id->getValue(),
-                $member->id->getValue(),
-                $journal->roomId->getValue(),
-                __('game.round.played', ['name' => $journal->memberName->getValue(), 'card' => $upcard->toString()]),
-                Value\Event\Message\Level::info()->getValue(),
-            ));
-        }
-
+        $this->played->dispatch($room, $member, $upcard);
         if ($round->isFinished()) {
-            foreach ($room->members as $member) {
-                $this->eventMessageRepository->save(new EventMessageSaveRecord(
-                    $journal->id->getValue(),
-                    $member->id->getValue(),
-                    $journal->roomId->getValue(),
-                    __('game.round.finished'),
-                    Value\Event\Message\Level::info()->getValue(),
-                ));
-            }
-            $this->eventMessageRepository->save(new EventMessageSaveRecord(
-                $journal->id->getValue(),
-                Value\Member\Id::everyone()->getValue(),
-                Value\Room\Id::lobby()->getValue(),
-                __('game.round.finished_in', ['room' => $room->name]),
-                Value\Event\Message\Level::info()->getValue(),
-            ));
+            $this->finished->dispatch($room, $round);
         }
     }
 }

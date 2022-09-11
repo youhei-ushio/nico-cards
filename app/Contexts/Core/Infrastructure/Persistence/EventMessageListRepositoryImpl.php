@@ -2,29 +2,28 @@
 
 declare(strict_types=1);
 
-namespace App\Contexts\Lobby\Infrastructure\Persistence;
+namespace App\Contexts\Core\Infrastructure\Persistence;
 
 use App\Contexts\Core\Domain\Persistence\EventMessageRestoreRecord;
 use App\Contexts\Core\Domain\Value;
-use App\Contexts\Core\Infrastructure\Persistence\EventMessageRecordCreatable;
-use App\Contexts\Lobby\Domain\Persistence\LobbyEventMessageListRepository;
+use App\Contexts\Core\Domain\Persistence\EventMessageListRepository;
 use App\Models;
 
-final class LobbyEventMessageListRepositoryImpl implements LobbyEventMessageListRepository
+final class EventMessageListRepositoryImpl implements EventMessageListRepository
 {
     use EventMessageRecordCreatable;
 
     /** @var array */
     private array $rows = [];
 
-    public function restore(): void
+    public function restore(Value\Member\Id $memberId): void
     {
         $this->rows = Models\EventMessage::query()
-            ->where('room_id', Value\Room\Id::lobby()->getValue())
-            ->orderBy('created_at', 'desc')
+            ->where('user_id', $memberId->getValue())
+            ->orderBy('id', 'desc')
             ->limit(5)
             ->get()
-            ->sortBy('created_at')
+            ->sortBy('id')
             ->toArray();
     }
 

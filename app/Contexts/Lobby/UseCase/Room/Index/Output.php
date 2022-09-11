@@ -11,7 +11,6 @@ final class Output
     public function __construct(
         public readonly Value\RoomCollection $rooms,
         public readonly Value\Member $member,
-        public readonly Value\Event\MessageCollection $messages,
     )
     {
 

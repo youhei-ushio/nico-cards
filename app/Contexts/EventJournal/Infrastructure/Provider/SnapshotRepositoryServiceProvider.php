@@ -13,7 +13,7 @@ final class SnapshotRepositoryServiceProvider extends ServiceProvider
     /**
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->bind(SnapshotRepository::class, SnapshotRepositoryImpl::class);
     }

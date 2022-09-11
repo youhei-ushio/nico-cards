@@ -177,8 +177,8 @@ use Illuminate\Support\ViewErrorBag;
     <script>
         window.addEventListener('load', () => {
             Echo.private('room{{ $view->room->id }}')
-                .listen('.message.posted', (e) => {
-                    console.log(e.message);
+                .listen('.room.changed', () => {
+                    location.reload();
                 });
         });
     </script>

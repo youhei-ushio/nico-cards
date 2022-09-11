@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contexts\Game\UseCase\Round\Detail;
 
-use App\Contexts\Core\Domain\Persistence\RoomEventMessageListRepository;
+use App\Contexts\Core\Domain\Persistence\EventMessageListRepository;
 use App\Contexts\Core\Domain\Value;
 use App\Contexts\Game\Domain\Persistence\MemberRepository;
 use App\Contexts\Game\Domain\Persistence\RoomRepository;
@@ -17,7 +17,7 @@ final class Interactor
         private readonly MemberRepository $memberRepository,
         private readonly RoomRepository $roomRepository,
         private readonly RoundRepository $roundRepository,
-        private readonly RoomEventMessageListRepository $eventMessageListRepository,
+        private readonly EventMessageListRepository $eventMessageListRepository,
     )
     {
 
@@ -28,7 +28,7 @@ final class Interactor
         $member = Value\Member::restore($this->memberRepository->restore($input->memberId));
         $room = Value\Room::restore($this->roomRepository->restore($input->memberId));
         $round = Round::restore($member->id, $this->roundRepository->restore($member->id));
-        $this->eventMessageListRepository->restore($input->memberId, $room->id);
+        $this->eventMessageListRepository->restore($input->memberId);
         $messages = Value\Event\Message::restoreList($this->eventMessageListRepository);
         return new Output(
             member: $member,

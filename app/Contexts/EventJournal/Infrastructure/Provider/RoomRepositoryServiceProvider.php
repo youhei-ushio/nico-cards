@@ -13,7 +13,7 @@ final class RoomRepositoryServiceProvider extends ServiceProvider
     /**
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->bind(RoomRepository::class, RoomRepositoryImpl::class);
     }

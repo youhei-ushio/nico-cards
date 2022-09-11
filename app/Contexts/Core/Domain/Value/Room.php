@@ -84,12 +84,12 @@ final class Room
                 parent::__construct($this->iterator);
             }
 
-            function current(): Room
+            public function current(): Room
             {
                 return parent::current();
             }
 
-            function key(): int
+            public function key(): int
             {
                 return parent::key();
             }

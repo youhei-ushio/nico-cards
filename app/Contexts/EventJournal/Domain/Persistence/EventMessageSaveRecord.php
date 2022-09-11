@@ -11,7 +11,6 @@ namespace App\Contexts\EventJournal\Domain\Persistence;
 final class EventMessageSaveRecord
 {
     public function __construct(
-        public readonly int $journalId,
         public readonly int $memberId,
         public readonly int $roomId,
         public readonly string $body,
