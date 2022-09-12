@@ -44,7 +44,7 @@ final class LeftImpl implements Left
             }
         }
 
-        event(new class() implements ShouldBroadcastNow
+        event(new class($room, $member) implements ShouldBroadcastNow
         {
             use Dispatchable, InteractsWithSockets;
 

@@ -33,7 +33,7 @@ final class EnteringRefusedImpl implements EnteringRefused
             Value\Event\Message\Level::error()->getValue(),
         ));
 
-        event(new class() implements ShouldBroadcastNow
+        event(new class($room, $member) implements ShouldBroadcastNow
         {
             use Dispatchable, InteractsWithSockets;
 
