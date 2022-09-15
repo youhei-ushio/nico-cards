@@ -6,7 +6,6 @@ namespace App\Contexts\EventJournal\Infrastructure\Persistence;
 
 use App\Contexts\EventJournal\Domain\Persistence\EventMessageRepository;
 use App\Contexts\EventJournal\Domain\Persistence\EventMessageSaveRecord;
-use App\Contexts\EventJournal\Infrastructure\Event\MessagePosted;
 use App\Models;
 use Throwable;
 
@@ -25,7 +24,5 @@ final class EventMessageRepositoryImpl implements EventMessageRepository
                 'level' => $record->level,
             ])
             ->saveOrFail();
-
-        event(new MessagePosted($record->roomId, $record->body));
     }
 }

@@ -30,22 +30,22 @@ final class PlayedImpl implements Played
      */
     public function dispatch(Value\Room $room, RoomMember $member, Upcard $upcard): void
     {
-        foreach ($room->members as $member) {
+        foreach ($room->members as $roomMember) {
             $this->eventMessageRepository->save(new EventMessageSaveRecord(
-                $member->id->getValue(),
+                $roomMember->id->getValue(),
                 $room->id->getValue(),
                 __('game.round.played', [$member->name->getValue(), 'card' => $upcard->toString()]),
                 Value\Event\Message\Level::info()->getValue(),
             ));
         }
 
-        event(new class($room, $member) implements ShouldBroadcastNow
+        event(new class($room->id, $member->id) implements ShouldBroadcastNow
         {
             use Dispatchable, InteractsWithSockets;
 
             public function __construct(
-                private readonly Value\Room $room,
-                public readonly Value\Member $member,
+                private readonly Value\Room\Id $roomId,
+                public readonly Value\Member\Id $memberId,
             )
             {
 
@@ -53,7 +53,7 @@ final class PlayedImpl implements Played
 
             public function broadcastOn(): array|Channel|PrivateChannel|string
             {
-                return new PrivateChannel("room{$this->room->id}");
+                return new PrivateChannel("room$this->roomId");
             }
 
             public function broadcastAs(): string

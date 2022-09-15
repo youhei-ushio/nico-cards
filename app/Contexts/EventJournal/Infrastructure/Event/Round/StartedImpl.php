@@ -44,13 +44,12 @@ final class StartedImpl implements Started
             Value\Event\Message\Level::info()->getValue(),
         ));
 
-        event(new class($room, $member) implements ShouldBroadcastNow
+        event(new class($room->id) implements ShouldBroadcastNow
         {
             use Dispatchable, InteractsWithSockets;
 
             public function __construct(
-                private readonly Value\Room $room,
-                public readonly Value\Member $member,
+                private readonly Value\Room\Id $roomId,
             )
             {
 
@@ -58,7 +57,7 @@ final class StartedImpl implements Started
 
             public function broadcastOn(): array|Channel|PrivateChannel|string
             {
-                return new PrivateChannel("room{$this->room->id}");
+                return new PrivateChannel("room$this->roomId");
             }
 
             public function broadcastAs(): string

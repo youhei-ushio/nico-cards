@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Contexts\Core\Domain\Value;
 use App\Contexts\Lobby\Infrastructure\Presenter\RoomIndexView;
 use Illuminate\Support\ViewErrorBag;
 
@@ -22,9 +23,9 @@ use Illuminate\Support\ViewErrorBag;
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <div class="grid gap-8 space-x-1 lg:grid-cols-3">
+                    <div id="rooms" class="grid gap-8 space-x-1 lg:grid-cols-3">
                         @foreach ($view->rooms as $room)
-                            <a href="{{ $room->exists($view->member) ? route('game.round.detail') : route('lobby.rooms.enter', $room->id) }}?member_id={{ $view->member->id }}" class="room flex flex-col items-center bg-white rounded-lg border border-gray-400 shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+                            <a href="javascript:void(0)" data-room_id="{{ $room->id }}" data-member_id="{{ $view->member->id }}" class="room flex flex-col items-center bg-white rounded-lg border border-gray-400 shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
                                 <img src="{{ asset('/images/game_tramp_card_man.png') }}" alt="game_tramp_card_man" class="room object-cover w-full h-96 rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg">
                                 <div class="flex flex-col justify-between p-4 leading-normal">
                                     <h3 class="text-2xl text-center text-gray-800">{{ $room->name }}</h3>
@@ -48,6 +49,19 @@ use Illuminate\Support\ViewErrorBag;
             </div>
         </div>
     </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            Echo.private('room{{ Value\Room\Id::lobby() }}')
+                .listen('.room.changed', () => {
+                    location.href = '{{ route('game.round.detail') }}';
+                });
+            Echo.private('room{{ Value\Room\Id::lobby() }}.for{{ $view->member->id }}')
+                .listen('.room.changed', () => {
+                    location.href = '{{ route('game.round.detail') }}';
+                });
+        });
+    </script>
 
     <x-slot name="member_name">
         {{ $view->member->name }}

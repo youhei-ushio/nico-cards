@@ -16,27 +16,59 @@ document.querySelectorAll('.card.playable').forEach(element => {
     });
 });
 
-document.addEventListener('click', event => {
-    if (event.target.id === 'start_button') {
-        startRound(event);
-    } else if (event.target.id === 'play_button') {
-        playCard();
-    } else if (event.target.id === 'pass_button') {
-        passTurn();
-    } else if (event.target.id === 'leave_button') {
-        loading();
-    }
+document.getElementById('start_button')?.addEventListener('click', event => {
+    startRound(event);
 });
 
-document.querySelectorAll('a.room').forEach(element => {
-    element.addEventListener('click', () => {
-        loading();
+document.getElementById('play_button')?.addEventListener('click', () => {
+    playCard();
+});
+
+document.getElementById('pass_button')?.addEventListener('click', () => {
+    passTurn();
+});
+
+document.getElementById('leave_button')?.addEventListener('click', event => {
+    leaveRoom(event);
+});
+
+document.querySelectorAll('#rooms a.room').forEach(element => {
+    element.addEventListener('click', (event) => {
+        enterRoom(event);
     });
 });
 
 const loading = () => {
     document.getElementById('loading').classList.remove('invisible');
 }
+
+const enterRoom = (event) => {
+    const room_id = event.currentTarget.dataset.room_id;
+    const member_id = event.currentTarget.dataset.member_id;
+
+    loading();
+
+    axios.get(`/lobby/rooms/${room_id}/enter?member_id=${member_id}`
+    ).then(() => {
+
+    }).catch(error => {
+        console.error(error);
+    });
+};
+
+const leaveRoom = (event) => {
+    const room_id = event.currentTarget.dataset.room_id;
+    const member_id = event.currentTarget.dataset.member_id;
+
+    loading();
+
+    axios.get(`/lobby/rooms/${room_id}/leave?member_id=${member_id}`
+    ).then(() => {
+
+    }).catch(error => {
+        console.error(error);
+    });
+};
 
 const startRound = (event) => {
     const member_id = event.target.dataset.member_id;

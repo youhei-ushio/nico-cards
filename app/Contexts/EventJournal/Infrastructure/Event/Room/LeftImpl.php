@@ -44,13 +44,13 @@ final class LeftImpl implements Left
             }
         }
 
-        event(new class($room, $member) implements ShouldBroadcastNow
+        event(new class($room->id, $member->id) implements ShouldBroadcastNow
         {
             use Dispatchable, InteractsWithSockets;
 
             public function __construct(
-                private readonly Value\Room $room,
-                public readonly Value\Member $member,
+                private readonly Value\Room\Id $roomId,
+                public readonly Value\Member\Id $memberId,
             )
             {
 
@@ -58,7 +58,30 @@ final class LeftImpl implements Left
 
             public function broadcastOn(): array|Channel|PrivateChannel|string
             {
-                return new PrivateChannel("room{$this->room->id}");
+                return new PrivateChannel("room$this->roomId");
+            }
+
+            public function broadcastAs(): string
+            {
+                return 'room.changed';
+            }
+        });
+
+        event(new class(Value\Room\Id::lobby(), $member->id) implements ShouldBroadcastNow
+        {
+            use Dispatchable, InteractsWithSockets;
+
+            public function __construct(
+                private readonly Value\Room\Id $roomId,
+                public readonly Value\Member\Id $memberId,
+            )
+            {
+
+            }
+
+            public function broadcastOn(): array|Channel|PrivateChannel|string
+            {
+                return new PrivateChannel("room$this->roomId");
             }
 
             public function broadcastAs(): string

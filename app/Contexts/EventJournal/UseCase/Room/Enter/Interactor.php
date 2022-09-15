@@ -18,6 +18,7 @@ final class Interactor
         private readonly RoomRepository $roomRepository,
         private readonly Event\Room\Entered $entered,
         private readonly Event\Room\EnteringRefused $enteringRefused,
+        private readonly Event\Room\ReEntered $reEntered,
     )
     {
 
@@ -28,7 +29,7 @@ final class Interactor
         $room = Value\Room::restore($this->roomRepository->restore($journal->roomId));
         $self = RoomMember::restore($this->roomMemberRepository->restore($journal->memberId));
         if ($self->isIn($room)) {
-            // 同じ部屋にいる場合は何もしない
+            $this->reEntered->dispatch($self);
             return;
         }
         if ($room->isFull) {

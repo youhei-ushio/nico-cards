@@ -8,9 +8,6 @@ use App\Contexts\Lobby\Infrastructure\Http\Request\Room\EnterRequest;
 use App\Contexts\Lobby\UseCase\Room\Enter\Input;
 use App\Contexts\Lobby\UseCase\Room\Enter\Interactor;
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Redirector;
 use Spatie\RouteAttributes\Attributes\Get;
 
 /**
@@ -23,16 +20,15 @@ final class EnterController extends Controller
     /**
      * @param EnterRequest $request
      * @param Interactor $interactor
-     * @return Application|RedirectResponse|Redirector
+     * @return void
      */
     #[Get('/lobby/rooms/{id}/enter', 'lobby.rooms.enter')]
     public function __invoke(
         EnterRequest $request,
         Interactor $interactor,
-    ): Redirector|RedirectResponse|Application
+    ): void
     {
         $input = $request->validated();
         $interactor->execute(Input::fromArray($input));
-        return redirect(route('game.round.detail') . '?member_id=' . $input['member_id']);
     }
 }

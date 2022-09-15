@@ -164,9 +164,9 @@ use Illuminate\Support\ViewErrorBag;
                                     {{ __('game.round.start') }}
                                 </button>
                             @endif
-                            <a href="{{ route('lobby.rooms.leave', ['id' => $view->room->id]) }}?member_id={{ $view->member->id }}" id="leave_button" class="w-40 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                            <button id="leave_button" data-room_id={{ $view->room->id }} data-member_id="{{ $view->member->id }}" class="w-40 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                                 {{ __('game.round.leave') }}
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>

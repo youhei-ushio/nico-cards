@@ -23,16 +23,15 @@ final class LeaveController extends Controller
     /**
      * @param LeaveRequest $request
      * @param Interactor $interactor
-     * @return Application|RedirectResponse|Redirector
+     * @return void
      */
     #[Get('/lobby/rooms/{id}/leave', 'lobby.rooms.leave')]
     public function __invoke(
         LeaveRequest $request,
         Interactor $interactor,
-    ): Redirector|RedirectResponse|Application
+    ): void
     {
         $input = $request->validated();
         $interactor->execute(Input::fromArray($input));
-        return redirect(route('dashboard') . '?member_id=' . $input['member_id']);
     }
 }
