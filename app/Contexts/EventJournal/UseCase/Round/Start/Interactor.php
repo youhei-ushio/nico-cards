@@ -7,7 +7,7 @@ namespace App\Contexts\EventJournal\UseCase\Round\Start;
 use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\Domain\Entity\Game\Round;
 use App\Contexts\EventJournal\Domain\Entity\Journal;
-use App\Contexts\EventJournal\Domain\Event;
+use App\Contexts\EventJournal\Domain\Notification;
 use App\Contexts\EventJournal\Domain\Persistence\RoomRepository;
 use App\Contexts\EventJournal\Domain\Persistence\RoundRepository;
 
@@ -16,7 +16,7 @@ final class Interactor
     public function __construct(
         private readonly RoundRepository $roundRepository,
         private readonly RoomRepository $roomRepository,
-        private readonly Event\Round\Started $started,
+        private readonly Notification\Round\Started $started,
     )
     {
 

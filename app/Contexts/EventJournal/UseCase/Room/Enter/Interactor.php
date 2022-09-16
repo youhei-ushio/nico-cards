@@ -7,7 +7,7 @@ namespace App\Contexts\EventJournal\UseCase\Room\Enter;
 use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\Domain\Entity\Journal;
 use App\Contexts\EventJournal\Domain\Entity\RoomMember;
-use App\Contexts\EventJournal\Domain\Event;
+use App\Contexts\EventJournal\Domain\Notification;
 use App\Contexts\EventJournal\Domain\Persistence\RoomMemberRepository;
 use App\Contexts\EventJournal\Domain\Persistence\RoomRepository;
 
@@ -16,9 +16,9 @@ final class Interactor
     public function __construct(
         private readonly RoomMemberRepository $roomMemberRepository,
         private readonly RoomRepository $roomRepository,
-        private readonly Event\Room\Entered $entered,
-        private readonly Event\Room\EnteringRefused $enteringRefused,
-        private readonly Event\Room\ReEntered $reEntered,
+        private readonly Notification\Room\Entered $entered,
+        private readonly Notification\Room\EnteringRefused $enteringRefused,
+        private readonly Notification\Room\ReEntered $reEntered,
     )
     {
 

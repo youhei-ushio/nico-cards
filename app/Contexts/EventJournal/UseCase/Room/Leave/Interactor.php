@@ -7,7 +7,7 @@ namespace App\Contexts\EventJournal\UseCase\Room\Leave;
 use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\Domain\Entity\Journal;
 use App\Contexts\EventJournal\Domain\Entity\RoomMember;
-use App\Contexts\EventJournal\Domain\Event;
+use App\Contexts\EventJournal\Domain\Notification;
 use App\Contexts\EventJournal\Domain\Persistence\RoomMemberRepository;
 use App\Contexts\EventJournal\Domain\Persistence\RoomRepository;
 use App\Contexts\EventJournal\Domain\Persistence\RoundRepository;
@@ -18,8 +18,8 @@ final class Interactor
         private readonly RoundRepository $roundRepository,
         private readonly RoomMemberRepository $roomMemberRepository,
         private readonly RoomRepository $roomRepository,
-        private readonly Event\Room\Left $left,
-        private readonly Event\Room\LeavingRefused $leavingRefused,
+        private readonly Notification\Room\Left $left,
+        private readonly Notification\Room\LeavingRefused $leavingRefused,
     )
     {
 

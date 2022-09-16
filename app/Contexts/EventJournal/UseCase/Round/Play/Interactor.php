@@ -8,7 +8,7 @@ use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\Domain\Entity\Game\Round;
 use App\Contexts\EventJournal\Domain\Entity\Journal;
 use App\Contexts\EventJournal\Domain\Entity\RoomMember;
-use App\Contexts\EventJournal\Domain\Event;
+use App\Contexts\EventJournal\Domain\Notification;
 use App\Contexts\EventJournal\Domain\Exception\CannotPlayCardException;
 use App\Contexts\EventJournal\Domain\Persistence\RoomMemberRepository;
 use App\Contexts\EventJournal\Domain\Persistence\RoomRepository;
@@ -20,9 +20,9 @@ final class Interactor
         private readonly RoundRepository $roundRepository,
         private readonly RoomRepository $roomRepository,
         private readonly RoomMemberRepository $roomMemberRepository,
-        private readonly Event\Round\Played $played,
-        private readonly Event\Round\Finished $finished,
-        private readonly Event\Round\PlayingCanceled $playingCanceled,
+        private readonly Notification\Round\Played $played,
+        private readonly Notification\Round\Finished $finished,
+        private readonly Notification\Round\PlayingCanceled $playingCanceled,
     )
     {
 

@@ -9,7 +9,7 @@ use App\Contexts\EventJournal\Domain\Entity\Game\Player;
 use App\Contexts\EventJournal\Domain\Entity\Game\Round;
 use App\Contexts\EventJournal\Domain\Entity\Journal;
 use App\Contexts\EventJournal\Domain\Entity\RoomMember;
-use App\Contexts\EventJournal\Domain\Event;
+use App\Contexts\EventJournal\Domain\Notification;
 use App\Contexts\EventJournal\Domain\Exception\NotEnoughPlayerException;
 use App\Contexts\EventJournal\Domain\Exception\TooManyPlayersException;
 use App\Contexts\EventJournal\Domain\Persistence\RoomMemberRepository;
@@ -22,7 +22,7 @@ final class Interactor
         private readonly RoundRepository $roundRepository,
         private readonly RoomRepository $roomRepository,
         private readonly RoomMemberRepository $roomMemberRepository,
-        private readonly Event\Round\CreatingCanceled $creatingCanceled,
+        private readonly Notification\Round\CreatingCanceled $creatingCanceled,
     )
     {
 
