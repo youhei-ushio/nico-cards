@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contexts\EventJournal\UseCase\Round\Play;
 
+use App\Contexts\Core\Domain\Exception\InvalidCombinationException;
 use App\Contexts\Core\Domain\Value;
 use App\Contexts\EventJournal\Domain\Entity\Game\Round;
 use App\Contexts\EventJournal\Domain\Entity\Journal;
@@ -36,7 +37,7 @@ final class Interactor
         $member = RoomMember::restore($this->roomMemberRepository->restore($journal->memberId));
         try {
             $upcard = $round->play($journal->memberId, $journal->cards);
-        } catch (CannotPlayCardException) {
+        } catch (CannotPlayCardException | InvalidCombinationException) {
             $this->playingCanceled->dispatch($room, $member);
             return;
         }
