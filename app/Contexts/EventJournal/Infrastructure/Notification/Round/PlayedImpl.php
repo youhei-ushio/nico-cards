@@ -34,7 +34,7 @@ final class PlayedImpl implements Played
             $this->eventMessageRepository->save(new EventMessageSaveRecord(
                 $roomMember->id->getValue(),
                 $room->id->getValue(),
-                __('game.round.played', [$member->name->getValue(), 'card' => $upcard->toString()]),
+                __('game.round.played', ['name' => $member->name->getValue(), 'card' => $upcard->toString()]),
                 Value\Event\Message\Level::info()->getValue(),
             ));
         }
